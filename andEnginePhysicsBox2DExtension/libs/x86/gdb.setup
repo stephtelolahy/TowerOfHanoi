@@ -1,0 +1,3 @@
+set solib-search-path /Users/stephanohuguestelolahy/Documents/Github/SampleAndEngine/andEnginePhysicsBox2DExtension/src/main/obj/local/x86
+source /Users/stephanohuguestelolahy/Downloads/android-ndk-r10c/prebuilt/common/gdb/common.setup
+directory /Users/stephanohuguestelolahy/Downloads/android-ndk-r10c/platforms/android-9/arch-x86/usr/include /Users/stephanohuguestelolahy/Downloads/android-ndk-r10c/sources/cxx-stl/system/include /Users/stephanohuguestelolahy/Documents/Github/SampleAndEngine/andEnginePhysicsBox2DExtension/src/main/jni
