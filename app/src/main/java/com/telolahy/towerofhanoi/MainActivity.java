@@ -56,14 +56,18 @@ class Ring extends Sprite {
 }
 
 public class MainActivity extends SimpleBaseGameActivity {
-    private static int CAMERA_WIDTH = 800;
-    private static int CAMERA_HEIGHT = 480;
+
+    private static final int CAMERA_WIDTH = 800;
+    private static final int CAMERA_HEIGHT = 480;
+    private static final int MAX_RING_COUNT = 4;
+
     private ITextureRegion mBackgroundTextureRegion, mTowerTextureRegion;
-    private ITextureRegion mRingTextureRegions[] = new ITextureRegion[4];
+    private ITextureRegion mRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
     private Sprite mTower1, mTower2, mTower3;
-    private Sprite mRings[] = new Sprite[4];
     private Stack mStack1, mStack2, mStack3;
     private int mMoves;
+    private int mOptimalMoves;
+    private int mRingsCount;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -140,6 +144,11 @@ public class MainActivity extends SimpleBaseGameActivity {
     @Override
     protected Scene onCreateScene() {
 
+        // 7 - initialize moves count
+        mMoves = 0;
+        mRingsCount = 4;
+        mOptimalMoves = MainActivity.hanoyFunction(mRingsCount);
+
         // 1 - Create new scene
         final Scene scene = new Scene();
         Sprite backgroundSprite = new Sprite(0, 0, mBackgroundTextureRegion, getVertexBufferObjectManager());
@@ -154,8 +163,9 @@ public class MainActivity extends SimpleBaseGameActivity {
         scene.attachChild(mTower3);
 
         // 3 - Create the rings
-        for (int i = 3; i >= 0; i--) {
-            Ring ring = new Ring(i, 0, 0, mRingTextureRegions[i], getVertexBufferObjectManager()) {
+        for (int i = mRingsCount - 1; i >= 0; i--) {
+            ITextureRegion ringTextureRegion = mRingTextureRegions[i + (MAX_RING_COUNT - mRingsCount)];
+            Ring ring = new Ring(i, 0, 0, ringTextureRegion, getVertexBufferObjectManager()) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                     if (((Ring) this.getmStack().peek()).getmWeight() != this.getmWeight())
@@ -168,7 +178,6 @@ public class MainActivity extends SimpleBaseGameActivity {
                 }
             };
 
-            mRings[i] = ring;
             scene.attachChild(ring);
 
             // 4 - Add all rings to stack one
@@ -180,9 +189,6 @@ public class MainActivity extends SimpleBaseGameActivity {
         }
 
         scene.setTouchAreaBindingOnActionDownEnabled(true);
-
-        // 7 - initialize moves count
-        mMoves = 0;
 
         return scene;
     }
@@ -225,21 +231,21 @@ public class MainActivity extends SimpleBaseGameActivity {
         if (currentStack != null && stack != currentStack) {
 
             mMoves++;
-            Log.i("hanoi", "Moves : " + mMoves);
+            Log.i("hanoi", "Moves : " + mMoves + "/" + mOptimalMoves);
             checkGameOver();
         }
     }
 
     private void checkGameOver() {
 
-        if (mStack3.size() == 4) {
+        if (mStack3.size() == mRingsCount) {
 
             runOnUiThread(new Runnable() {
                 public void run() {
 
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Congratulation !!!")
-                            .setMessage("Level completed.. Let's move to next challenge.")
+                            .setMessage("Level completed with "+ mMoves + " moves.\nOptimal is " + mOptimalMoves + "\n Let's move to next challenge.")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // continue with delete
@@ -251,6 +257,14 @@ public class MainActivity extends SimpleBaseGameActivity {
                 }
             });
 
+        }
+    }
+
+    private static int hanoyFunction(int ringsCount) {
+        if (ringsCount <= 1) {
+            return 1;
+        } else {
+            return hanoyFunction(ringsCount - 1) * 2 + 1;
         }
     }
 }
