@@ -87,12 +87,6 @@ public class MainActivity extends SimpleBaseGameActivity {
                     return getAssets().open("gfx/tower.png");
                 }
             });
-            ITexture ring0 = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                @Override
-                public InputStream open() throws IOException {
-                    return getAssets().open("gfx/ring0.png");
-                }
-            });
             ITexture ring1 = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
@@ -111,22 +105,28 @@ public class MainActivity extends SimpleBaseGameActivity {
                     return getAssets().open("gfx/ring3.png");
                 }
             });
+            ITexture ring4 = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
+                @Override
+                public InputStream open() throws IOException {
+                    return getAssets().open("gfx/ring4.png");
+                }
+            });
 
             // 2 - Load bitmap textures into VRAM
             backgroundTexture.load();
             towerTexture.load();
-            ring0.load();
             ring1.load();
             ring2.load();
             ring3.load();
+            ring4.load();
 
             // 3 - Set up texture regions
             mBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture);
             mTowerTextureRegion = TextureRegionFactory.extractFromTexture(towerTexture);
-            mRingTextureRegions[0] = TextureRegionFactory.extractFromTexture(ring0);
-            mRingTextureRegions[1] = TextureRegionFactory.extractFromTexture(ring1);
-            mRingTextureRegions[2] = TextureRegionFactory.extractFromTexture(ring2);
-            mRingTextureRegions[3] = TextureRegionFactory.extractFromTexture(ring3);
+            mRingTextureRegions[0] = TextureRegionFactory.extractFromTexture(ring1);
+            mRingTextureRegions[1] = TextureRegionFactory.extractFromTexture(ring2);
+            mRingTextureRegions[2] = TextureRegionFactory.extractFromTexture(ring3);
+            mRingTextureRegions[3] = TextureRegionFactory.extractFromTexture(ring4);
 
             // 4 - Create the stacks
             mStack1 = new Stack();
@@ -146,9 +146,9 @@ public class MainActivity extends SimpleBaseGameActivity {
         scene.attachChild(backgroundSprite);
 
         // 2 - Add the towers
-        mTower1 = new Sprite(192, 63, mTowerTextureRegion, getVertexBufferObjectManager());
-        mTower2 = new Sprite(400, 63, mTowerTextureRegion, getVertexBufferObjectManager());
-        mTower3 = new Sprite(604, 63, mTowerTextureRegion, getVertexBufferObjectManager());
+        mTower1 = new Sprite(192, 80, mTowerTextureRegion, getVertexBufferObjectManager());
+        mTower2 = new Sprite(400, 80, mTowerTextureRegion, getVertexBufferObjectManager());
+        mTower3 = new Sprite(604, 80, mTowerTextureRegion, getVertexBufferObjectManager());
         scene.attachChild(mTower1);
         scene.attachChild(mTower2);
         scene.attachChild(mTower3);
