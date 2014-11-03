@@ -15,7 +15,6 @@ import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
@@ -24,42 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Stack;
 
-class Ring extends Sprite {
-    private int mWeight;
-    private Stack mStack; //this represents the stack that this ring belongs to
-    private Sprite mTower;
-
-    public Ring(int weight, float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
-        super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
-        this.mWeight = weight;
-    }
-
-    public int getmWeight() {
-        return mWeight;
-    }
-
-    public Stack getmStack() {
-        return mStack;
-    }
-
-    public void setmStack(Stack mStack) {
-        this.mStack = mStack;
-    }
-
-    public Sprite getmTower() {
-        return mTower;
-    }
-
-    public void setmTower(Sprite mTower) {
-        this.mTower = mTower;
-    }
-}
-
 public class MainActivity extends SimpleBaseGameActivity {
 
     private static final int CAMERA_WIDTH = 800;
     private static final int CAMERA_HEIGHT = 480;
-    private static final int MAX_RING_COUNT = 4;
+    private static final int MAX_RING_COUNT = 6;
 
     private ITextureRegion mBackgroundTextureRegion, mTowerTextureRegion;
     private ITextureRegion mRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
@@ -115,6 +83,18 @@ public class MainActivity extends SimpleBaseGameActivity {
                     return getAssets().open("gfx/ring4.png");
                 }
             });
+            ITexture ring5 = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
+                @Override
+                public InputStream open() throws IOException {
+                    return getAssets().open("gfx/ring5.png");
+                }
+            });
+            ITexture ring6 = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
+                @Override
+                public InputStream open() throws IOException {
+                    return getAssets().open("gfx/ring6.png");
+                }
+            });
 
             // 2 - Load bitmap textures into VRAM
             backgroundTexture.load();
@@ -123,6 +103,8 @@ public class MainActivity extends SimpleBaseGameActivity {
             ring2.load();
             ring3.load();
             ring4.load();
+            ring5.load();
+            ring6.load();
 
             // 3 - Set up texture regions
             mBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture);
@@ -131,6 +113,8 @@ public class MainActivity extends SimpleBaseGameActivity {
             mRingTextureRegions[1] = TextureRegionFactory.extractFromTexture(ring2);
             mRingTextureRegions[2] = TextureRegionFactory.extractFromTexture(ring3);
             mRingTextureRegions[3] = TextureRegionFactory.extractFromTexture(ring4);
+            mRingTextureRegions[4] = TextureRegionFactory.extractFromTexture(ring5);
+            mRingTextureRegions[5] = TextureRegionFactory.extractFromTexture(ring6);
 
             // 4 - Create the stacks
             mStack1 = new Stack();
@@ -146,7 +130,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 
         // 7 - initialize moves count
         mMoves = 0;
-        mRingsCount = 4;
+        mRingsCount = 3;
         mOptimalMoves = MainActivity.hanoyFunction(mRingsCount);
 
         // 1 - Create new scene
@@ -155,16 +139,16 @@ public class MainActivity extends SimpleBaseGameActivity {
         scene.attachChild(backgroundSprite);
 
         // 2 - Add the towers
-        mTower1 = new Sprite(192, 80, mTowerTextureRegion, getVertexBufferObjectManager());
-        mTower2 = new Sprite(400, 80, mTowerTextureRegion, getVertexBufferObjectManager());
-        mTower3 = new Sprite(604, 80, mTowerTextureRegion, getVertexBufferObjectManager());
+        mTower1 = new Sprite(152, 82, mTowerTextureRegion, getVertexBufferObjectManager());
+        mTower2 = new Sprite(400, 82, mTowerTextureRegion, getVertexBufferObjectManager());
+        mTower3 = new Sprite(644, 82, mTowerTextureRegion, getVertexBufferObjectManager());
         scene.attachChild(mTower1);
         scene.attachChild(mTower2);
         scene.attachChild(mTower3);
 
         // 3 - Create the rings
         for (int i = mRingsCount - 1; i >= 0; i--) {
-            ITextureRegion ringTextureRegion = mRingTextureRegions[i + (MAX_RING_COUNT - mRingsCount)];
+            ITextureRegion ringTextureRegion = mRingTextureRegions[i];
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, getVertexBufferObjectManager()) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
