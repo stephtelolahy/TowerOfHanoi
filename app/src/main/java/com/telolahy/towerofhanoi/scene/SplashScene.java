@@ -1,16 +1,13 @@
 package com.telolahy.towerofhanoi.scene;
 
-import org.andengine.engine.camera.Camera;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.util.GLState;
 
 /**
  * Created by stephanohuguestelolahy on 11/4/14.
  */
 public class SplashScene extends BaseScene {
 
-    private Sprite splash;
+    private Sprite mBackground;
 
     @Override
     public void createScene() {
@@ -26,6 +23,11 @@ public class SplashScene extends BaseScene {
 
     @Override
     public void disposeScene() {
+
+        mBackground.detachSelf();
+        mBackground.dispose();
+        this.detachSelf();
+        this.dispose();
 
     }
 }

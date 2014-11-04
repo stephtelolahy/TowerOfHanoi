@@ -10,11 +10,8 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 public abstract class BaseScene extends Scene {
 
-    //    protected Engine engine;
-//    protected Activity activity;
     protected ResourcesManager mResourcesManager;
     protected VertexBufferObjectManager mVertexBufferObjectManager;
-//    protected BoundCamera camera;
 
     //---------------------------------------------
     // CONSTRUCTOR
@@ -23,9 +20,6 @@ public abstract class BaseScene extends Scene {
     public BaseScene() {
         mResourcesManager = ResourcesManager.getInstance();
         mVertexBufferObjectManager = ResourcesManager.getInstance().vertexBufferObjectManager;
-//        this.engine = resourcesManager.engine;
-//        this.activity = resourcesManager.activity;
-//        this.camera = resourcesManager.camera;
         createScene();
     }
 
