@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="unspecified" >
+        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEnginePhysicsBox2DExtension/build/intermediates/exploded-aar/TowerOfHanoi/andEngine/unspecified/res" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEnginePhysicsBox2DExtension/src/main/res" />
+        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEnginePhysicsBox2DExtension/build/generated/res/rs/release" />
+        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEnginePhysicsBox2DExtension/build/generated/res/generated/release" />
+    </dataSet>
+    <dataSet config="release" >
+        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEnginePhysicsBox2DExtension/src/release/res" />
+    </dataSet>
+
+</merger>
