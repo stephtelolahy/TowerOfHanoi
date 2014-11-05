@@ -28,6 +28,10 @@ public class ResourcesManager {
     public VertexBufferObjectManager vertexBufferObjectManager;
 
     public TextureRegion splashBackgroundTextureRegion;
+    public TextureRegion menuBackgroundTextureRegion;
+
+    private ITexture mSplashBackgroundTexture;
+    private ITexture mMenuBackgroundTexture;
 
     //---------------------------------------------
     // GETTERS AND SETTERS
@@ -45,20 +49,49 @@ public class ResourcesManager {
         getInstance().vertexBufferObjectManager = vertexBufferObjectManager;
     }
 
-    public void loadSplashScreen() {
+    public void loadSplashResources() {
 
         try {
-            ITexture backgroundTexture = new BitmapTexture(this.activity.getTextureManager(), new IInputStreamOpener() {
+            mSplashBackgroundTexture = new BitmapTexture(this.activity.getTextureManager(), new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
                     return activity.getAssets().open("gfx/splash/creative_games_logo.png");
                 }
             });
-            backgroundTexture.load();
-            splashBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture);
+            mSplashBackgroundTexture.load();
+            splashBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(mSplashBackgroundTexture);
 
         } catch (IOException e) {
             Debug.e(e);
         }
+    }
+
+    public void unloadSplashResources() {
+
+        mSplashBackgroundTexture.unload();
+        splashBackgroundTextureRegion = null;
+    }
+
+    public void loadMenuResources() {
+
+        try {
+            mMenuBackgroundTexture = new BitmapTexture(this.activity.getTextureManager(), new IInputStreamOpener() {
+                @Override
+                public InputStream open() throws IOException {
+                    return activity.getAssets().open("gfx/menu/menu_background.png");
+                }
+            });
+            mMenuBackgroundTexture.load();
+            menuBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(mMenuBackgroundTexture);
+
+        } catch (IOException e) {
+            Debug.e(e);
+        }
+    }
+
+    public void unloadMenuResources() {
+
+        mMenuBackgroundTexture.unload();
+        menuBackgroundTextureRegion = null;
     }
 }

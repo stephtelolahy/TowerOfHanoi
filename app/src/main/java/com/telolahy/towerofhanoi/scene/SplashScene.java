@@ -7,17 +7,17 @@ import org.andengine.entity.sprite.Sprite;
  */
 public class SplashScene extends BaseScene {
 
-    private Sprite mBackground;
+    private Sprite mBackgroundSprite;
 
     @Override
     public void createScene() {
 
-        Sprite backgroundSprite = new Sprite(400, 240, mResourcesManager.splashBackgroundTextureRegion, mVertexBufferObjectManager);
+        mBackgroundSprite = new Sprite(400, 240, mResourcesManager.splashBackgroundTextureRegion, mVertexBufferObjectManager);
 //        backgroundSprite.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 //        IEntityModifier iem = new AlphaModifier(2000, 0, 255);
 //        iem.setAutoUnregisterWhenFinished(true);
 //        backgroundSprite.registerEntityModifier(iem);
-        attachChild(backgroundSprite);
+        attachChild(mBackgroundSprite);
     }
 
     @Override
@@ -28,8 +28,8 @@ public class SplashScene extends BaseScene {
     @Override
     public void disposeScene() {
 
-        mBackground.detachSelf();
-        mBackground.dispose();
+        mBackgroundSprite.detachSelf();
+        mBackgroundSprite.dispose();
         this.detachSelf();
         this.dispose();
 
