@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 15
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 17
+    buildToolsVersion "21.0.2"
 
     defaultConfig {
         applicationId "org.andengine"
@@ -13,12 +13,14 @@ android {
             moduleName "andengine_shared"
         }
     }
+
     sourceSets {
         main {
             jni.srcDirs = []
             jniLibs.srcDirs = ['libs']
         }
     }
+
     buildTypes {
         release {
             runProguard false

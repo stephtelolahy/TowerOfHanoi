@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-
 package com.badlogic.gdx.physics.box2d;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Shape.Type;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class Fixture {
-	// @off
-	/*JNI
-#include <Box2D/Box2D.h>
-	 */
 	/** body **/
-	private Body body;
+	private final Body body;
 
 	/** the address of the fixture **/
-	protected long addr;
+	protected final long addr;
 
 	/** the shape, initialized lazy **/
 	protected Shape shape;
@@ -37,122 +31,80 @@ public class Fixture {
 	/** user specified data **/
 	protected Object userData;
 
-	/** Constructs a new fixture
-	 * @param addr the address of the fixture */
+	/**
+	 * Constructs a new fixture
+	 * @param addr the address of the fixture
+	 */
 	protected Fixture (Body body, long addr) {
 		this.body = body;
 		this.addr = addr;
 	}
 
-	protected void reset (Body body, long addr) {
-		this.body = body;
-		this.addr = addr;
-		this.shape = null;
-		this.userData = null;
-	}
-
-	/** Get the type of the child shape. You can use this to down cast to the concrete shape.
-	 * @return the shape type. */
+	/**
+	 * Get the type of the child shape. You can use this to down cast to the concrete shape.
+	 * @return the shape type.
+	 */
 	public Type getType () {
 		int type = jniGetType(addr);
-		switch (type) {
-		case 0:
+		if (type == 0)
 			return Type.Circle;
-		case 1:
-			return Type.Edge;
-		case 2:
+		else
 			return Type.Polygon;
-		case 3:
-			return Type.Chain;
-		default:
-			throw new GdxRuntimeException("Unknown shape type!");
-		}
 	}
 
-	private native int jniGetType (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		b2Shape::Type type = fixture->GetType();
-		switch( type )
-		{
-		case b2Shape::e_circle: return 0;
-		case b2Shape::e_edge: return 1;
-		case b2Shape::e_polygon: return 2;
-		case b2Shape::e_chain: return 3;
-		default:
-			return -1;
-		}
-	*/
+	private native int jniGetType (long addr);
 
-	/** Returns the shape of this fixture */
+	/**
+	 * Returns the shape of this fixture
+	 */
 	public Shape getShape () {
 		if (shape == null) {
 			long shapeAddr = jniGetShape(addr);
-			if (shapeAddr == 0) throw new GdxRuntimeException("Null shape address!");
 			int type = Shape.jniGetType(shapeAddr);
 
-			switch (type) {
-			case 0:
+			if (type == 0)
 				shape = new CircleShape(shapeAddr);
-				break;
-			case 1:
-				shape = new EdgeShape(shapeAddr);
-				break;
-			case 2:
+			else
 				shape = new PolygonShape(shapeAddr);
-				break;
-			case 3:
-				shape = new ChainShape(shapeAddr);
-				break;
-			default:
-				throw new GdxRuntimeException("Unknown shape type!");
-			}
 		}
 
 		return shape;
 	}
 
-	private native long jniGetShape (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		return (jlong)fixture->GetShape();
-	*/
+	private native long jniGetShape (long addr);
 
-	/** Set if this fixture is a sensor. */
+	/**
+	 * Set if this fixture is a sensor.
+	 */
 	public void setSensor (boolean sensor) {
 		jniSetSensor(addr, sensor);
 	}
 
-	private native void jniSetSensor (long addr, boolean sensor); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		fixture->SetSensor(sensor);
-	*/
+	private native void jniSetSensor (long addr, boolean sensor);
 
-	/** Is this fixture a sensor (non-solid)?
-	 * @return the true if the shape is a sensor. */
+	/**
+	 * Is this fixture a sensor (non-solid)?
+	 * @return the true if the shape is a sensor.
+	 */
 	public boolean isSensor () {
 		return jniIsSensor(addr);
 	}
 
-	private native boolean jniIsSensor (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		return fixture->IsSensor();
-	*/
+	private native boolean jniIsSensor (long addr);
 
-	/** Set the contact filtering data. This will not update contacts until the next time step when either parent body is active and
-	 * awake. This automatically calls Refilter. */
+	/**
+	 * Set the contact filtering data. This will not update contacts until the next time step when either parent body is active and
+	 * awake.
+	 */
 	public void setFilterData (Filter filter) {
 		jniSetFilterData(addr, filter.categoryBits, filter.maskBits, filter.groupIndex);
 	}
 
-	private native void jniSetFilterData (long addr, short categoryBits, short maskBits, short groupIndex); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		b2Filter filter;
-		filter.categoryBits = categoryBits;
-		filter.maskBits = maskBits;
-		filter.groupIndex = groupIndex;
-		fixture->SetFilterData(filter);
-	*/
+	private native void jniSetFilterData (long addr, short categoryBits, short maskBits, short groupIndex);
 
-	/** Get the contact filtering data. */
+	/**
+	 * Get the contact filtering data.
+	 */
 	private final short[] tmp = new short[3];
 	private final Filter filter = new Filter();
 
@@ -164,47 +116,33 @@ public class Fixture {
 		return filter;
 	}
 
-	private native void jniGetFilterData (long addr, short[] filter); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		unsigned short* filterOut = (unsigned short*)filter;
-		b2Filter f = fixture->GetFilterData();
-		filterOut[0] = f.maskBits;
-		filterOut[1] = f.categoryBits;
-		filterOut[2] = f.groupIndex;
-	*/
+	private native void jniGetFilterData (long addr, short[] filter);
 
-	/** Call this if you want to establish collision that was previously disabled by b2ContactFilter::ShouldCollide. */
-	public void refilter () {
-		jniRefilter(addr);
-	}
-
-	private native void jniRefilter (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		fixture->Refilter();
-	*/
-
-	/** Get the parent body of this fixture. This is NULL if the fixture is not attached. */
+	/**
+	 * Get the parent body of this fixture. This is NULL if the fixture is not attached.
+	 */
 	public Body getBody () {
 		return body;
 	}
 
-	/** Test a point for containment in this fixture.
-	 * @param p a point in world coordinates. */
+	/**
+	 * Test a point for containment in this fixture.
+	 * @param p a point in world coordinates.
+	 */
 	public boolean testPoint (Vector2 p) {
 		return jniTestPoint(addr, p.x, p.y);
 	}
 
-	/** Test a point for containment in this fixture.
+	/**
+	 * Test a point for containment in this fixture.
 	 * @param x the x-coordinate
-	 * @param y the y-coordinate */
-	public boolean testPoint (float x, float y) {
+	 * @param y the y-coordinate
+	 */
+	public boolean testPoint(float x, float y) {
 		return jniTestPoint(addr, x, y);
 	}
 
-	private native boolean jniTestPoint (long addr, float x, float y); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		return fixture->TestPoint( b2Vec2( x, y ) );
-	*/
+	private native boolean jniTestPoint (long addr, float x, float y);
 
 // const b2Body* GetBody() const;
 //
@@ -230,78 +168,76 @@ public class Fixture {
 // /// may be expensive.
 // void GetMassData(b2MassData* massData) const;
 
-	/** Set the density of this fixture. This will _not_ automatically adjust the mass of the body. You must call
-	 * b2Body::ResetMassData to update the body's mass. */
+	/**
+	 * Set the density of this fixture. This will _not_ automatically adjust the mass of the body. You must call
+	 * b2Body::ResetMassData to update the body's mass.
+	 */
 	public void setDensity (float density) {
 		jniSetDensity(addr, density);
 	}
 
-	private native void jniSetDensity (long addr, float density); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		fixture->SetDensity(density);
-	*/
+	private native void jniSetDensity (long addr, float density);
 
-	/** Get the density of this fixture. */
+	/**
+	 * Get the density of this fixture.
+	 */
 	public float getDensity () {
 		return jniGetDensity(addr);
 	}
 
-	private native float jniGetDensity (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		return fixture->GetDensity();
-	*/
+	private native float jniGetDensity (long addr);
 
-	/** Get the coefficient of friction. */
+	/**
+	 * Get the coefficient of friction.
+	 */
 	public float getFriction () {
 		return jniGetFriction(addr);
 	}
 
-	private native float jniGetFriction (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		return fixture->GetFriction();
-	*/
+	private native float jniGetFriction (long addr);
 
-	/** Set the coefficient of friction. */
+	/**
+	 * Set the coefficient of friction.
+	 */
 	public void setFriction (float friction) {
 		jniSetFriction(addr, friction);
 	}
 
-	private native void jniSetFriction (long addr, float friction); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		fixture->SetFriction(friction);
-	*/
+	private native void jniSetFriction (long addr, float friction);
 
-	/** Get the coefficient of restitution. */
+	/**
+	 * Get the coefficient of restitution.
+	 */
 	public float getRestitution () {
 		return jniGetRestitution(addr);
 	}
 
-	private native float jniGetRestitution (long addr); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		return fixture->GetRestitution();
-	*/
+	private native float jniGetRestitution (long addr);
 
-	/** Set the coefficient of restitution. */
+	/**
+	 * Set the coefficient of restitution.
+	 */
 	public void setRestitution (float restitution) {
 		jniSetRestitution(addr, restitution);
 	}
 
-	private native void jniSetRestitution (long addr, float restitution); /*
-		b2Fixture* fixture = (b2Fixture*)addr;
-		fixture->SetRestitution(restitution);
-	*/
+	private native void jniSetRestitution (long addr, float restitution);
 
 // /// Get the fixture's AABB. This AABB may be enlarge and/or stale.
 // /// If you need a more accurate AABB, compute it using the shape and
 // /// the body transform.
 // const b2AABB& GetAABB() const;
 
-	/** Sets custom user data. */
+	/**
+	 * Sets custom user data.
+	 */
 	public void setUserData (Object userData) {
 		this.userData = userData;
 	}
 
-	/** @return custom user data */
+	/**
+	 * @return custom user data
+	 */
 	public Object getUserData () {
 		return userData;
 	}

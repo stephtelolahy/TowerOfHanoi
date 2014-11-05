@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2009 Erin Catto http://www.box2d.org
+* Copyright (c) 2006-2009 Erin Catto http://www.gphysics.com
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -110,11 +110,15 @@ void b2ContactManager::Collide()
 	{
 		b2Fixture* fixtureA = c->GetFixtureA();
 		b2Fixture* fixtureB = c->GetFixtureB();
-		int32 indexA = c->GetChildIndexA();
-		int32 indexB = c->GetChildIndexB();
 		b2Body* bodyA = fixtureA->GetBody();
 		b2Body* bodyB = fixtureB->GetBody();
-		 
+
+		if (bodyA->IsAwake() == false && bodyB->IsAwake() == false)
+		{
+			c = c->GetNext();
+			continue;
+		}
+
 		// Is this contact flagged for filtering?
 		if (c->m_flags & b2Contact::e_filterFlag)
 		{
@@ -140,18 +144,8 @@ void b2ContactManager::Collide()
 			c->m_flags &= ~b2Contact::e_filterFlag;
 		}
 
-		bool activeA = bodyA->IsAwake() && bodyA->m_type != b2_staticBody;
-		bool activeB = bodyB->IsAwake() && bodyB->m_type != b2_staticBody;
-
-		// At least one body must be awake and it must be dynamic or kinematic.
-		if (activeA == false && activeB == false)
-		{
-			c = c->GetNext();
-			continue;
-		}
-
-		int32 proxyIdA = fixtureA->m_proxies[indexA].proxyId;
-		int32 proxyIdB = fixtureB->m_proxies[indexB].proxyId;
+		int32 proxyIdA = fixtureA->m_proxyId;
+		int32 proxyIdB = fixtureB->m_proxyId;
 		bool overlap = m_broadPhase.TestOverlap(proxyIdA, proxyIdB);
 
 		// Here we destroy contacts that cease to overlap in the broad-phase.
@@ -176,14 +170,8 @@ void b2ContactManager::FindNewContacts()
 
 void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 {
-	b2FixtureProxy* proxyA = (b2FixtureProxy*)proxyUserDataA;
-	b2FixtureProxy* proxyB = (b2FixtureProxy*)proxyUserDataB;
-
-	b2Fixture* fixtureA = proxyA->fixture;
-	b2Fixture* fixtureB = proxyB->fixture;
-
-	int32 indexA = proxyA->childIndex;
-	int32 indexB = proxyB->childIndex;
+	b2Fixture* fixtureA = (b2Fixture*)proxyUserDataA;
+	b2Fixture* fixtureB = (b2Fixture*)proxyUserDataB;
 
 	b2Body* bodyA = fixtureA->GetBody();
 	b2Body* bodyB = fixtureB->GetBody();
@@ -194,8 +182,6 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		return;
 	}
 
-	// TODO_ERIN use a hash table to remove a potential bottleneck when both
-	// bodies have a lot of contacts.
 	// Does a contact already exist?
 	b2ContactEdge* edge = bodyB->GetContactList();
 	while (edge)
@@ -204,16 +190,13 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		{
 			b2Fixture* fA = edge->contact->GetFixtureA();
 			b2Fixture* fB = edge->contact->GetFixtureB();
-			int32 iA = edge->contact->GetChildIndexA();
-			int32 iB = edge->contact->GetChildIndexB();
-
-			if (fA == fixtureA && fB == fixtureB && iA == indexA && iB == indexB)
+			if (fA == fixtureA && fB == fixtureB)
 			{
 				// A contact already exists.
 				return;
 			}
 
-			if (fA == fixtureB && fB == fixtureA && iA == indexB && iB == indexA)
+			if (fA == fixtureB && fB == fixtureA)
 			{
 				// A contact already exists.
 				return;
@@ -236,17 +219,11 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 	}
 
 	// Call the factory.
-	b2Contact* c = b2Contact::Create(fixtureA, indexA, fixtureB, indexB, m_allocator);
-	if (c == NULL)
-	{
-		return;
-	}
+	b2Contact* c = b2Contact::Create(fixtureA, fixtureB, m_allocator);
 
 	// Contact creation may swap fixtures.
 	fixtureA = c->GetFixtureA();
 	fixtureB = c->GetFixtureB();
-	indexA = c->GetChildIndexA();
-	indexB = c->GetChildIndexB();
 	bodyA = fixtureA->GetBody();
 	bodyB = fixtureB->GetBody();
 
@@ -284,10 +261,6 @@ void b2ContactManager::AddPair(void* proxyUserDataA, void* proxyUserDataB)
 		bodyB->m_contactList->prev = &c->m_nodeB;
 	}
 	bodyB->m_contactList = &c->m_nodeB;
-
-	// Wake up the bodies
-	bodyA->SetAwake(true);
-	bodyB->SetAwake(true);
 
 	++m_contactCount;
 }

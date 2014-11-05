@@ -229,7 +229,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 
                     new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Congratulation !!!")
-                            .setMessage("Level completed with "+ mMoves + " moves.\nOptimal is " + mOptimalMoves + "\n Let's move to next challenge.")
+                            .setMessage("Level completed with " + mMoves + " moves.\nOptimal is " + mOptimalMoves + "\n Let's move to next challenge.")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // continue with delete

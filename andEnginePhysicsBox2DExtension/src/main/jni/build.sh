@@ -1,13 +1,18 @@
-#! /bin/sh
+#!/bin/bash
 
-NDK_DIRECTORY="~/android-ndk/"
-PROJECT_DIRECTORY="~/src/android/AndEngineExtensions/AndEnginePhysicsBox2DExtensionNew/"
+NDK_DIRECTORY="/Users/ngramlich/Applications/android/ndk/r8e/"
+
+SCRIPT_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+PROJECT_DIRECTORY=${SCRIPT_DIR}/../
 
 # Run build:
-cd ${PROJECT_DIRECTORY}
-${NDK_DIRECTORY}ndk-build
+pushd ${PROJECT_DIRECTORY} > /dev/null
+${NDK_DIRECTORY}ndk-build -j8
 
 # Clean temporary files:
 rm -rf ${PROJECT_DIRECTORY}obj
 find . -name gdbserver -print0 | xargs -0 rm -rf
 find . -name gdb.setup -print0 | xargs -0 rm -rf
+
+popd > /dev/null
