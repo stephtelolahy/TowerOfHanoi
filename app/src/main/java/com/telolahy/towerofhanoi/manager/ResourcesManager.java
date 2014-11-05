@@ -51,7 +51,7 @@ public class ResourcesManager {
             ITexture backgroundTexture = new BitmapTexture(this.activity.getTextureManager(), new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
-                    return activity.getAssets().open("gfx/splash/creative_games800white.png");
+                    return activity.getAssets().open("gfx/splash/creative_games_logo.png");
                 }
             });
             backgroundTexture.load();
