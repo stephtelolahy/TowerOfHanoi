@@ -1,19 +1,24 @@
 package com.telolahy.towerofhanoi.manager;
 
+import android.graphics.Color;
+
 import com.telolahy.towerofhanoi.GameActivity;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TextureRegionFactory;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by stephanohuguestelolahy on 11/4/14.
@@ -27,11 +32,15 @@ public class ResourcesManager {
     public BoundCamera camera;
     public VertexBufferObjectManager vertexBufferObjectManager;
 
-    public TextureRegion splashBackgroundTextureRegion;
-    public TextureRegion menuBackgroundTextureRegion;
+    public Font font;
 
-    private ITexture mSplashBackgroundTexture;
-    private ITexture mMenuBackgroundTexture;
+    public ITextureRegion splashTextureRegion;
+    private BitmapTextureAtlas splashTextureAtlas;
+
+    public ITextureRegion menuBackgroundTextureRegion;
+    public ITextureRegion menuPlayTextureRegion;
+    public ITextureRegion menuHelpTextureRegion;
+    private BuildableBitmapTextureAtlas menuTextureAtlas;
 
     //---------------------------------------------
     // GETTERS AND SETTERS
@@ -51,47 +60,54 @@ public class ResourcesManager {
 
     public void loadSplashResources() {
 
-        try {
-            mSplashBackgroundTexture = new BitmapTexture(this.activity.getTextureManager(), new IInputStreamOpener() {
-                @Override
-                public InputStream open() throws IOException {
-                    return activity.getAssets().open("gfx/splash/creative_games_logo.png");
-                }
-            });
-            mSplashBackgroundTexture.load();
-            splashBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(mSplashBackgroundTexture);
-
-        } catch (IOException e) {
-            Debug.e(e);
-        }
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/splash/");
+        splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity, "creative_games_logo.png", 0, 0);
+        splashTextureAtlas.load();
     }
 
     public void unloadSplashResources() {
 
-        mSplashBackgroundTexture.unload();
-        splashBackgroundTextureRegion = null;
+        splashTextureAtlas.unload();
+        splashTextureRegion = null;
     }
 
     public void loadMenuResources() {
 
-        try {
-            mMenuBackgroundTexture = new BitmapTexture(this.activity.getTextureManager(), new IInputStreamOpener() {
-                @Override
-                public InputStream open() throws IOException {
-                    return activity.getAssets().open("gfx/menu/menu_background.png");
-                }
-            });
-            mMenuBackgroundTexture.load();
-            menuBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(mMenuBackgroundTexture);
+        loadMenuGraphics();
+        loadMenuFonts();
+    }
 
-        } catch (IOException e) {
+    private void loadMenuGraphics() {
+
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
+        menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        menuBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background.png");
+        menuPlayTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
+        menuHelpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "help.png");
+
+        try {
+            menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            menuTextureAtlas.load();
+        } catch (final ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             Debug.e(e);
         }
     }
 
-    public void unloadMenuResources() {
+    private void loadMenuFonts() {
 
-        mMenuBackgroundTexture.unload();
-        menuBackgroundTextureRegion = null;
+        FontFactory.setAssetBasePath("font/");
+        final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2, Color.BLACK);
+        font.load();
+    }
+
+    public void unloadMenuTextures() {
+        menuTextureAtlas.unload();
+    }
+
+    public void loadMenuTextures() {
+        menuTextureAtlas.load();
     }
 }

@@ -2,6 +2,7 @@ package com.telolahy.towerofhanoi.scene;
 
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
 
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -12,6 +13,7 @@ public abstract class BaseScene extends Scene {
 
     protected ResourcesManager mResourcesManager;
     protected VertexBufferObjectManager mVertexBufferObjectManager;
+    protected BoundCamera mCamera;
 
     //---------------------------------------------
     // CONSTRUCTOR
@@ -20,6 +22,7 @@ public abstract class BaseScene extends Scene {
     public BaseScene() {
         mResourcesManager = ResourcesManager.getInstance();
         mVertexBufferObjectManager = ResourcesManager.getInstance().vertexBufferObjectManager;
+        mCamera = ResourcesManager.getInstance().camera;
         createScene();
     }
 

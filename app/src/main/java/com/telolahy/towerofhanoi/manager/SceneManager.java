@@ -1,7 +1,8 @@
 package com.telolahy.towerofhanoi.manager;
 
 import com.telolahy.towerofhanoi.scene.BaseScene;
-import com.telolahy.towerofhanoi.scene.MenuScene;
+import com.telolahy.towerofhanoi.scene.LoadingScene;
+import com.telolahy.towerofhanoi.scene.MainMenuScene;
 import com.telolahy.towerofhanoi.scene.SplashScene;
 
 import org.andengine.engine.Engine;
@@ -18,6 +19,7 @@ public class SceneManager {
     private BaseScene mCurrentScene;
     private BaseScene mSplashScene;
     private BaseScene mMenuScene;
+    private BaseScene mLoadingScene;
 
     public static SceneManager getInstance() {
         return INSTANCE;
@@ -37,8 +39,7 @@ public class SceneManager {
         pOnCreateSceneCallback.onCreateSceneFinished(mSplashScene);
     }
 
-    private void disposeSplashScene()
-    {
+    private void disposeSplashScene() {
         ResourcesManager.getInstance().unloadSplashResources();
         mSplashScene.disposeScene();
         mSplashScene = null;
@@ -47,9 +48,15 @@ public class SceneManager {
     public void createMenuScene() {
 
         ResourcesManager.getInstance().loadMenuResources();
-        mMenuScene = new MenuScene();
-//        loadingScene = new LoadingScene();
+        mMenuScene = new MainMenuScene();
+        mLoadingScene = new LoadingScene();
         setScene(mMenuScene);
         disposeSplashScene();
+    }
+
+    public void loadGameScene() {
+
+        setScene(mLoadingScene);
+        ResourcesManager.getInstance().unloadMenuTextures();
     }
 }

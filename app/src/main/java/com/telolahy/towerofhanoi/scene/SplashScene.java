@@ -12,7 +12,7 @@ public class SplashScene extends BaseScene {
     @Override
     public void createScene() {
 
-        mBackgroundSprite = new Sprite(400, 240, mResourcesManager.splashBackgroundTextureRegion, mVertexBufferObjectManager);
+        mBackgroundSprite = new Sprite(400, 240, mResourcesManager.splashTextureRegion, mVertexBufferObjectManager);
 //        backgroundSprite.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 //        IEntityModifier iem = new AlphaModifier(2000, 0, 255);
 //        iem.setAutoUnregisterWhenFinished(true);
