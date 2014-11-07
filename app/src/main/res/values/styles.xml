@@ -2,7 +2,7 @@
 <resources>
 
     <style name="dialog_text">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
 </resources>
