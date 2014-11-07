@@ -79,6 +79,7 @@ public class MainMenuScene extends BaseScene {
     @Override
     public void onBackKeyPressed() {
 
+        System.exit(0);
     }
 
     @Override
