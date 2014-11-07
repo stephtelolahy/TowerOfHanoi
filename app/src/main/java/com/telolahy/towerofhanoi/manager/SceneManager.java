@@ -1,11 +1,14 @@
 package com.telolahy.towerofhanoi.manager;
 
 import com.telolahy.towerofhanoi.scene.BaseScene;
+import com.telolahy.towerofhanoi.scene.GameScene;
 import com.telolahy.towerofhanoi.scene.LoadingScene;
 import com.telolahy.towerofhanoi.scene.MainMenuScene;
 import com.telolahy.towerofhanoi.scene.SplashScene;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface;
 
 /**
@@ -20,12 +23,13 @@ public class SceneManager {
     private BaseScene mSplashScene;
     private BaseScene mMenuScene;
     private BaseScene mLoadingScene;
+    private BaseScene mGameScene;
 
     public static SceneManager getInstance() {
         return INSTANCE;
     }
 
-    public void setScene(BaseScene scene) {
+    private void setScene(BaseScene scene) {
 
         mEngine.setScene(scene);
         mCurrentScene = scene;
@@ -40,6 +44,7 @@ public class SceneManager {
     }
 
     private void disposeSplashScene() {
+
         ResourcesManager.getInstance().unloadSplashResources();
         mSplashScene.disposeScene();
         mSplashScene = null;
@@ -58,5 +63,36 @@ public class SceneManager {
 
         setScene(mLoadingScene);
         ResourcesManager.getInstance().unloadMenuTextures();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback()
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler)
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadGameResources();
+                mGameScene = new GameScene();
+                setScene(mGameScene);
+            }
+        }));
+    }
+
+    public void loadMenuScene()
+    {
+        setScene(mLoadingScene);
+        mGameScene.disposeScene();
+        ResourcesManager.getInstance().unloadGameTextures();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback()
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler)
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadMenuTextures();
+                setScene(mMenuScene);
+            }
+        }));
+    }
+
+    public BaseScene getCurrentScene() {
+
+        return mCurrentScene;
     }
 }

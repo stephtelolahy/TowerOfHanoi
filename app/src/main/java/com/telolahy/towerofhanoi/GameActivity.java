@@ -1,5 +1,7 @@
 package com.telolahy.towerofhanoi;
 
+import android.view.KeyEvent;
+
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 
@@ -64,6 +66,16 @@ public class GameActivity extends BaseGameActivity {
             }
         }));
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+        }
+        return false;
     }
 
     @Override

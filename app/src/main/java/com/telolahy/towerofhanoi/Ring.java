@@ -10,6 +10,7 @@ import java.util.Stack;
  * Created by stephanohuguestelolahy on 11/2/14.
  */
 class Ring extends Sprite {
+
     private int mWeight;
     private Stack mStack; //this represents the stack that this ring belongs to
     private Sprite mTower;

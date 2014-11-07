@@ -42,6 +42,13 @@ public class ResourcesManager {
     public ITextureRegion menuHelpTextureRegion;
     private BuildableBitmapTextureAtlas menuTextureAtlas;
 
+    public ITextureRegion gameBackgroundTextureRegion;
+    public ITextureRegion gameTowerTextureRegion;
+    public ITextureRegion gameRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
+    private BuildableBitmapTextureAtlas gameTextureAtlas;
+
+    private static final int MAX_RING_COUNT = 6;
+
     //---------------------------------------------
     // GETTERS AND SETTERS
     //---------------------------------------------
@@ -109,5 +116,36 @@ public class ResourcesManager {
 
     public void loadMenuTextures() {
         menuTextureAtlas.load();
+    }
+
+    public void loadGameResources() {
+
+        loadGameGraphics();
+    }
+
+    private void loadGameGraphics() {
+
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
+        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        gameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "game_background.png");
+        gameTowerTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tower.png");
+        gameRingTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring1.png");
+        gameRingTextureRegions[1] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring2.png");
+        gameRingTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring3.png");
+        gameRingTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring4.png");
+        gameRingTextureRegions[4] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring5.png");
+        gameRingTextureRegions[5] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring6.png");
+
+        try {
+            gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            gameTextureAtlas.load();
+        } catch (final ITextureAtlasBuilder.TextureAtlasBuilderException e) {
+            Debug.e(e);
+        }
+    }
+
+    public void unloadGameTextures() {
+
+        gameTextureAtlas.unload();
     }
 }
