@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Hanoi</string>
-
+    <string name="app_name">Hanoi Origins</string>
+    <string name="ok">OK</string>
+    <string name="app_help"> The objective of the game is to move the entire left stack to right tower\n
+        - Only one disk can be moved at a time.\n
+        - No disk may be placed on top of a smaller disk.\n\n
+        More games at http://steph-creative.blogspot.com \n\n
+        Creative Games Studio by Stéphano Telolahy</string>
+    <string name="loading">Loading...</string>
 </resources>

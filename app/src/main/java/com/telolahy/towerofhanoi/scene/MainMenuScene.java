@@ -1,5 +1,12 @@
 package com.telolahy.towerofhanoi.scene;
 
+import android.app.AlertDialog;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.widget.TextView;
+
+import com.telolahy.towerofhanoi.R;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 
 import org.andengine.entity.scene.menu.MenuScene;
@@ -57,7 +64,7 @@ public class MainMenuScene extends BaseScene {
                         SceneManager.getInstance().loadGameScene();
                         return true;
                     case MENU_HELP:
-                        // TODO: show help
+                        displayHelpDialog();
                         return true;
                     default:
                         return false;
@@ -77,5 +84,36 @@ public class MainMenuScene extends BaseScene {
     @Override
     public void disposeScene() {
 
+    }
+
+    private void displayHelpDialog() {
+
+        mActivity.runOnUiThread(new Runnable() {
+            public void run() {
+
+                final TextView textView = new TextView(mActivity);
+
+                int padding = mActivity.getResources().getDimensionPixelSize(R.dimen.dialog_padding);
+                textView.setPadding(padding, padding, padding, padding);
+                textView.setTextAppearance(mActivity, R.style.dialog_text);
+
+                String text = mActivity.getResources().getString(R.string.app_help);
+                final SpannableString message = new SpannableString(text);
+                Linkify.addLinks(message, Linkify.WEB_URLS);
+                textView.setText(message);
+                textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+                String title = mActivity.getResources().getString(R.string.app_name);
+                String positiveText = mActivity.getResources().getString(R.string.ok);
+                new AlertDialog.Builder(mActivity)
+                        .setTitle(title)
+                        .setCancelable(true)
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setPositiveButton(positiveText, null)
+                        .setView(textView)
+                        .create()
+                        .show();
+            }
+        });
     }
 }
