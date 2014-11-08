@@ -46,8 +46,9 @@ public class ResourcesManager {
     public ITextureRegion gameBackgroundTextureRegion;
     public ITextureRegion gameTowerTextureRegion;
     public ITextureRegion gameRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
-    public ITextureRegion gameCompleteWindowRegion;
+    public ITextureRegion gameWindowRegion;
     public ITiledTextureRegion gameCompleteStarsRegion;
+
     private BuildableBitmapTextureAtlas gameTextureAtlas;
 
     public static final int MAX_RING_COUNT = 6;
@@ -129,7 +130,7 @@ public class ResourcesManager {
     private void loadGameGraphics() {
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
-        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
         gameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "game_background.png");
         gameTowerTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tower.png");
         gameRingTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring1.png");
@@ -138,7 +139,7 @@ public class ResourcesManager {
         gameRingTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring4.png");
         gameRingTextureRegions[4] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring5.png");
         gameRingTextureRegions[5] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring6.png");
-        gameCompleteWindowRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
+        gameWindowRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "game_window.png");
         gameCompleteStarsRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
 
         try {

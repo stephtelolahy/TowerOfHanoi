@@ -1,11 +1,13 @@
 package com.telolahy.towerofhanoi.object;
 
+import com.telolahy.towerofhanoi.R;
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.TiledSprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -34,39 +36,47 @@ public class LevelCompleteWindow extends Sprite {
 
     public LevelCompleteWindow(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene, LevelCompleteWindowListener listener) {
 
-        super(0, 0, 650, 400, ResourcesManager.getInstance().gameCompleteWindowRegion, pSpriteVertexBufferObject);
+        super(400, 240, ResourcesManager.getInstance().gameWindowRegion, pSpriteVertexBufferObject);
         mListener = listener;
         attachStars(pSpriteVertexBufferObject, scene);
     }
 
     private void attachStars(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene) {
 
-        mStar1 = new TiledSprite(150, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
-        mStar2 = new TiledSprite(325, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject)
-        {
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-            mListener.levelCompleteWindowReplayButtonClicked();
-            return true;
-        }
-        }
-        ;
-        scene.registerTouchArea(mStar2);
+        ResourcesManager resourcesManager = ResourcesManager.getInstance();
+        String text = resourcesManager.activity.getResources().getString(R.string.level_completed);
+        attachChild(new Text(400, 380, resourcesManager.font, text, resourcesManager.vertexBufferObjectManager));
 
-        mStar3 = new TiledSprite(500, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject)
-        {
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                mListener.levelCompleteWindowNextButtonClicked();
-                return true;
-            }
-        }
-        ;
-        scene.registerTouchArea(mStar3);
-
+        mStar1 = new TiledSprite(275, 250, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar2 = new TiledSprite(400, 250, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar3 = new TiledSprite(525, 250, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
         attachChild(mStar1);
         attachChild(mStar2);
         attachChild(mStar3);
+
+
+//        {
+//            @Override
+//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+//            mListener.levelCompleteWindowReplayButtonClicked();
+//            return true;
+//        }
+//        }
+//        ;
+//        scene.registerTouchArea(mStar2);
+
+
+//        {
+//            @Override
+//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+//                mListener.levelCompleteWindowNextButtonClicked();
+//                return true;
+//            }
+//        }
+//        ;
+//        scene.registerTouchArea(mStar3);
+
+
     }
 
     /**

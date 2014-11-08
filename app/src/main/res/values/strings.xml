@@ -8,4 +8,5 @@
         More games at http://steph-creative.blogspot.com \n\n
         Creative Games Studio by Stéphano Telolahy</string>
     <string name="loading">Loading...</string>
+    <string name="level_completed">Level completed !</string>
 </resources>
