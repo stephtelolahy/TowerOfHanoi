@@ -1,11 +1,17 @@
 package com.telolahy.towerofhanoi.scene;
 
+import com.telolahy.towerofhanoi.R;
 import com.telolahy.towerofhanoi.manager.GameManager;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 import com.telolahy.towerofhanoi.object.LevelCompleteWindow;
 import com.telolahy.towerofhanoi.object.Ring;
 
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.Entity;
+import org.andengine.entity.scene.IOnSceneTouchListener;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.EntityBackground;
+import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -18,7 +24,7 @@ import java.util.Stack;
 /**
  * Created by stephanohuguestelolahy on 11/7/14.
  */
-public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCompleteWindowListener {
+public class GameScene extends BaseScene {
 
     private Sprite mBackground;
     private Sprite mTower1, mTower2, mTower3;
@@ -27,6 +33,8 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
     private int mMoves;
     private int mOptimalMoves;
     private int mRingsCount;
+
+    private Text mObjectiveMessage;
 
     private HUD mGameHUD;
     private Text mMovesText;
@@ -40,8 +48,30 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
         createBackground();
         createPhysics();
         loadLevel(GameManager.getInstance().currentLevel());
+        displayObjectiveMessage();
 
-        mLevelCompleteWindow = new LevelCompleteWindow(mVertexBufferObjectManager, this, this);
+        setOnSceneTouchListener(new IOnSceneTouchListener() {
+
+            @Override
+            public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+
+                if (mObjectiveMessage.isVisible()) {
+                    mObjectiveMessage.setVisible(false);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void displayObjectiveMessage() {
+
+        Entity bg = new Entity(0, 0, 800, 480);
+        bg.setColor(1, 0, 0, 1f);
+        attachChild(bg);
+
+        String text = mResourcesManager.activity.getResources().getString(R.string.objective_message) + " " + mOptimalMoves;
+        mObjectiveMessage = new Text(400, 240, mResourcesManager.font, text, mVertexBufferObjectManager);
+        attachChild(mObjectiveMessage);
     }
 
     private void loadLevel(int level) {
@@ -63,9 +93,16 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, mVertexBufferObjectManager) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+
+                    if (mObjectiveMessage.isVisible()) {
+                        mObjectiveMessage.setVisible(false);
+                    }
+
                     if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
                         return false;
+
                     this.setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+
                     if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP) {
                         checkForCollisionsWithTowers(this);
                     }
@@ -124,7 +161,7 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
 
     private void updateMovesText() {
 
-        mMovesText.setText("Moves: "+ mMoves);
+        mMovesText.setText("Moves: " + mMoves);
     }
 
     @Override
@@ -156,8 +193,10 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
         mCamera.setHUD(null);
         mCamera.setChaseEntity(null);
 
-        mLevelCompleteWindow.detachSelf();
-        mLevelCompleteWindow.dispose();
+        if (mLevelCompleteWindow != null) {
+            mLevelCompleteWindow.detachSelf();
+            mLevelCompleteWindow.dispose();
+        }
     }
 
 
@@ -220,20 +259,20 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
 
         if (mStack3.size() == mRingsCount) {
 
+            mLevelCompleteWindow = new LevelCompleteWindow(mVertexBufferObjectManager, this, new LevelCompleteWindow.LevelCompleteWindowListener() {
+                @Override
+                public void levelCompleteWindowNextButtonClicked() {
+                    SceneManager.getInstance().moveToNextGame();
+                }
+
+                @Override
+                public void levelCompleteWindowReplayButtonClicked() {
+                    SceneManager.getInstance().reloadGame();
+                }
+            });
             LevelCompleteWindow.StarsCount starsCount = mMoves == mOptimalMoves ? LevelCompleteWindow.StarsCount.THREE : LevelCompleteWindow.StarsCount.TWO;
             mLevelCompleteWindow.display(starsCount, GameScene.this, mCamera);
         }
     }
 
-    @Override
-    public void levelCompleteWindowNextButtonClicked() {
-
-        SceneManager.getInstance().moveToNextGame();
-    }
-
-    @Override
-    public void levelCompleteWindowReplayButtonClicked() {
-
-        SceneManager.getInstance().reloadGame();
-    }
 }

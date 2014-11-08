@@ -1,6 +1,7 @@
 package com.telolahy.towerofhanoi.object;
 
 import com.telolahy.towerofhanoi.R;
+import com.telolahy.towerofhanoi.manager.GameManager;
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
 
 import org.andengine.engine.camera.Camera;
@@ -47,6 +48,11 @@ public class LevelCompleteWindow extends Sprite {
         ResourcesManager resourcesManager = ResourcesManager.getInstance();
 
         String text = resourcesManager.activity.getResources().getString(R.string.level_completed);
+        boolean isOnLastLevel = GameManager.getInstance().isOnLastLevel();
+        if (isOnLastLevel) {
+            text = resourcesManager.activity.getResources().getString(R.string.last_level_completed);
+        }
+
         attachChild(new Text(400, 380, resourcesManager.font, text, resourcesManager.vertexBufferObjectManager));
 
         mStar1 = new TiledSprite(275, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
@@ -66,6 +72,12 @@ public class LevelCompleteWindow extends Sprite {
         attachChild(retryButton);
         scene.registerTouchArea(retryButton);
 
+
+        if (isOnLastLevel) {
+
+            retryButton.setPosition(400, retryButton.getY());
+            return;
+        }
 
         Sprite nextButton = new Sprite(540, 120, resourcesManager.gameCompleteNextRegion, pSpriteVertexBufferObject) {
             @Override

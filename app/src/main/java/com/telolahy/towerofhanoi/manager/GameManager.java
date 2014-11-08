@@ -12,7 +12,7 @@ public class GameManager {
     private static final String LEVEL_PREFS_KEY = "level";
     private static final String PREFS_NAME = "game_preferences";
 
-    public static final int LEVELS_COUNT = 5;
+    public static final int LEVELS_COUNT = 6;
 
     public static GameManager getInstance() {
         return INSTANCE;
@@ -31,6 +31,11 @@ public class GameManager {
         SharedPreferences.Editor edit = prefs.edit();
         edit.putInt(LEVEL_PREFS_KEY, level);
         edit.commit();
+    }
+
+    public boolean isOnLastLevel() {
+
+        return currentLevel() == LEVELS_COUNT;
     }
 
     private SharedPreferences preferences() {

@@ -9,4 +9,6 @@
         Creative Games Studio by Stéphano Telolahy</string>
     <string name="loading">Loading...</string>
     <string name="level_completed">Level completed !</string>
+    <string name="last_level_completed">All completed. Well done !</string>
+    <string name="objective_message">Move rings to right tower\n  Perfect score is </string>
 </resources>
