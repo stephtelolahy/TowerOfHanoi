@@ -56,12 +56,12 @@ public class GameScene extends BaseScene {
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, mVertexBufferObjectManager) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                    if (((Ring) this.getmStack().peek()).getmWeight() != this.getmWeight())
-//                        return false;
-//                    this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
-//                    if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP) {
-//                        checkForCollisionsWithTowers(this);
-//                    }
+                    if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
+                        return false;
+                    this.setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+                    if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP) {
+                        checkForCollisionsWithTowers(this);
+                    }
                     return true;
                 }
             };
@@ -121,25 +121,25 @@ public class GameScene extends BaseScene {
         }
     }
 
-//    private void checkForCollisionsWithTowers(Ring ring) {
-//
-//        Stack stack = null;
-//        Sprite tower = null;
-//        if (ring.collidesWith(mTower1) && (mStack1.size() == 0 || ring.getmWeight() < ((Ring) mStack1.peek()).getmWeight())) {
-//            stack = mStack1;
-//            tower = mTower1;
-//        } else if (ring.collidesWith(mTower2) && (mStack2.size() == 0 || ring.getmWeight() < ((Ring) mStack2.peek()).getmWeight())) {
-//            stack = mStack2;
-//            tower = mTower2;
-//        } else if (ring.collidesWith(mTower3) && (mStack3.size() == 0 || ring.getmWeight() < ((Ring) mStack3.peek()).getmWeight())) {
-//            stack = mStack3;
-//            tower = mTower3;
-//        } else {
-//            stack = ring.getmStack();
-//            tower = ring.getmTower();
-//        }
-//        putRingOnStack(ring, stack, tower);
-//    }
+    private void checkForCollisionsWithTowers(Ring ring) {
+
+        Stack stack = null;
+        Sprite tower = null;
+        if (ring.collidesWith(mTower1) && (mStack1.size() == 0 || ring.getWeight() < ((Ring) mStack1.peek()).getWeight())) {
+            stack = mStack1;
+            tower = mTower1;
+        } else if (ring.collidesWith(mTower2) && (mStack2.size() == 0 || ring.getWeight() < ((Ring) mStack2.peek()).getWeight())) {
+            stack = mStack2;
+            tower = mTower2;
+        } else if (ring.collidesWith(mTower3) && (mStack3.size() == 0 || ring.getWeight() < ((Ring) mStack3.peek()).getWeight())) {
+            stack = mStack3;
+            tower = mTower3;
+        } else {
+            stack = ring.getStack();
+            tower = ring.getTower();
+        }
+        putRingOnStack(ring, stack, tower);
+    }
 
     private void putRingOnStack(Ring ring, Stack stack, Sprite tower) {
 
