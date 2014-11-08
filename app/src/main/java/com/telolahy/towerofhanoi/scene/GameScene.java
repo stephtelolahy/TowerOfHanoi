@@ -1,5 +1,7 @@
 package com.telolahy.towerofhanoi.scene;
 
+import android.util.Log;
+
 import com.telolahy.towerofhanoi.manager.SceneManager;
 import com.telolahy.towerofhanoi.object.LevelCompleteWindow;
 import com.telolahy.towerofhanoi.object.Ring;
@@ -17,7 +19,7 @@ import java.util.Stack;
 /**
  * Created by stephanohuguestelolahy on 11/7/14.
  */
-public class GameScene extends BaseScene {
+public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCompleteWindowListener {
 
     private Sprite mBackground;
     private Sprite mTower1, mTower2, mTower3;
@@ -28,7 +30,8 @@ public class GameScene extends BaseScene {
     private int mRingsCount;
 
     private HUD mGameHUD;
-    private Text mScoreText;
+    private Text mMovesText;
+    private Text mLevelText;
     private LevelCompleteWindow mLevelCompleteWindow;
 
     @Override
@@ -39,7 +42,7 @@ public class GameScene extends BaseScene {
         createPhysics();
         loadLevel(1);
 
-        mLevelCompleteWindow = new LevelCompleteWindow(mVertexBufferObjectManager, this);
+        mLevelCompleteWindow = new LevelCompleteWindow(mVertexBufferObjectManager, this, this);
     }
 
     private void loadLevel(int level) {
@@ -51,6 +54,9 @@ public class GameScene extends BaseScene {
         mStack2 = new Stack();
         mStack3 = new Stack();
         mRings = new Ring[mRingsCount];
+
+        mMovesText.setText("Moves: 0");
+        mLevelText.setText("Level " + level);
 
         // add the rings
         for (int i = mRingsCount - 1; i >= 0; i--) {
@@ -99,19 +105,21 @@ public class GameScene extends BaseScene {
     }
 
     private void createHUD() {
+
         mGameHUD = new HUD();
 
-        mScoreText = new Text(20, 420, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
-        mScoreText.setAnchorCenter(0, 0);
-        mScoreText.setText("Moves: 0");
-        mGameHUD.attachChild(mScoreText);
+        mLevelText = new Text(100, 440, mResourcesManager.font, "Level 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
+        mGameHUD.attachChild(mLevelText);
+
+        mMovesText = new Text(400, 20, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
+        mGameHUD.attachChild(mMovesText);
 
         mCamera.setHUD(mGameHUD);
     }
 
     private void addToMoves(int i) {
         mMoves += i;
-        mScoreText.setText("Moves: " + mMoves);
+        mMovesText.setText("Moves: " + mMoves);
     }
 
     @Override
@@ -132,16 +140,19 @@ public class GameScene extends BaseScene {
         mTower3.detachSelf();
         mTower3.dispose();
 
-        for (int i = 0; i < mRingsCount; i++) {
-            mRings[i].detachSelf();
-            mRings[i].dispose();
+        for (Sprite ring: mRings) {
+            ring.detachSelf();
+            ring.dispose();
         }
 
         this.detachSelf();
         this.dispose();
 
         mCamera.setHUD(null);
-        mCamera.setChaseEntity(null); //TODO
+        mCamera.setChaseEntity(null);
+
+        mLevelCompleteWindow.detachSelf();
+        mLevelCompleteWindow.dispose();
     }
 
 
@@ -207,5 +218,17 @@ public class GameScene extends BaseScene {
             LevelCompleteWindow.StarsCount starsCount = mMoves == mOptimalMoves? LevelCompleteWindow.StarsCount.THREE : LevelCompleteWindow.StarsCount.TWO;
             mLevelCompleteWindow.display(starsCount, GameScene.this, mCamera);
         }
+    }
+
+    @Override
+    public void levelCompleteWindowNextButtonClicked() {
+
+        Log.i("", "move to next level");
+    }
+
+    @Override
+    public void levelCompleteWindowReplayButtonClicked() {
+
+        Log.i("", "reload game");
     }
 }

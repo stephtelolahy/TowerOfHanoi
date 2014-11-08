@@ -1,7 +1,5 @@
 package com.telolahy.towerofhanoi.object;
 
-import android.util.Log;
-
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
 
 import org.andengine.engine.camera.Camera;
@@ -16,9 +14,17 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
  */
 public class LevelCompleteWindow extends Sprite {
 
+
+    public interface LevelCompleteWindowListener {
+
+        void levelCompleteWindowNextButtonClicked();
+        void levelCompleteWindowReplayButtonClicked();
+    }
+
     private TiledSprite mStar1;
     private TiledSprite mStar2;
     private TiledSprite mStar3;
+    private LevelCompleteWindowListener mListener;
 
     public enum StarsCount {
         ONE,
@@ -26,21 +32,32 @@ public class LevelCompleteWindow extends Sprite {
         THREE
     }
 
-    public LevelCompleteWindow(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene) {
+    public LevelCompleteWindow(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene, LevelCompleteWindowListener listener) {
 
         super(0, 0, 650, 400, ResourcesManager.getInstance().gameCompleteWindowRegion, pSpriteVertexBufferObject);
+        mListener = listener;
         attachStars(pSpriteVertexBufferObject, scene);
     }
 
     private void attachStars(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene) {
 
         mStar1 = new TiledSprite(150, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
-        mStar2 = new TiledSprite(325, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar2 = new TiledSprite(325, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject)
+        {
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            mListener.levelCompleteWindowReplayButtonClicked();
+            return true;
+        }
+        }
+        ;
+        scene.registerTouchArea(mStar2);
+
         mStar3 = new TiledSprite(500, 150, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject)
         {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                Log.i("", "tap star 3");
+                mListener.levelCompleteWindowNextButtonClicked();
                 return true;
             }
         }
