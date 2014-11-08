@@ -36,8 +36,8 @@ public class MainMenuScene extends BaseScene {
 
     private void createBackground() {
 
-        Sprite backgroundSprite = new Sprite(400, 240, mResourcesManager.menuBackgroundTextureRegion, mVertexBufferObjectManager);
-        attachChild(backgroundSprite);
+        mBackground = new Sprite(400, 240, mResourcesManager.menuBackgroundTextureRegion, mVertexBufferObjectManager);
+        attachChild(mBackground);
     }
 
     private void createMenuChildScene() {
@@ -85,6 +85,10 @@ public class MainMenuScene extends BaseScene {
     @Override
     public void disposeScene() {
 
+        mBackground.detachSelf();
+        mBackground.dispose();
+        this.detachSelf();
+        this.dispose();
     }
 
     private void displayHelpDialog() {

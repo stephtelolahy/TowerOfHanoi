@@ -47,7 +47,7 @@ public class ResourcesManager {
     public ITextureRegion gameRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
     private BuildableBitmapTextureAtlas gameTextureAtlas;
 
-    private static final int MAX_RING_COUNT = 6;
+    public static final int MAX_RING_COUNT = 6;
 
     //---------------------------------------------
     // GETTERS AND SETTERS
