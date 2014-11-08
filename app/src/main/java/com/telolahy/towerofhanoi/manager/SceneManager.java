@@ -74,6 +74,7 @@ public class SceneManager {
     }
 
     public void loadMenuScene() {
+
         setScene(mLoadingScene);
         mGameScene.disposeScene();
         ResourcesManager.getInstance().unloadGameTextures();
@@ -89,5 +90,27 @@ public class SceneManager {
     public BaseScene getCurrentScene() {
 
         return mCurrentScene;
+    }
+
+    public void reloadGame() {
+
+        setScene(mLoadingScene);
+        mGameScene.disposeScene();
+        mEngine.registerUpdateHandler(new TimerHandler(0.2f, new ITimerCallback() {
+            public void onTimePassed(final TimerHandler pTimerHandler) {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                mGameScene = new GameScene();
+                setScene(mGameScene);
+            }
+        }));
+    }
+
+    public void moveToNextGame() {
+
+        int level = GameManager.getInstance().currentLevel();
+        if (level < GameManager.LEVELS_COUNT) {
+            GameManager.getInstance().saveCurrentLevel(level + 1);
+        }
+        reloadGame();
     }
 }

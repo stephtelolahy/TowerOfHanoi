@@ -1,7 +1,6 @@
 package com.telolahy.towerofhanoi.scene;
 
-import android.util.Log;
-
+import com.telolahy.towerofhanoi.manager.GameManager;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 import com.telolahy.towerofhanoi.object.LevelCompleteWindow;
 import com.telolahy.towerofhanoi.object.Ring;
@@ -40,7 +39,7 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
         createHUD();
         createBackground();
         createPhysics();
-        loadLevel(1);
+        loadLevel(GameManager.getInstance().currentLevel());
 
         mLevelCompleteWindow = new LevelCompleteWindow(mVertexBufferObjectManager, this, this);
     }
@@ -48,15 +47,15 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
     private void loadLevel(int level) {
 
         mMoves = 0;
-        mRingsCount = level + 1;
+        mRingsCount = level;
         mOptimalMoves = computeOptimalMoves(mRingsCount);
         mStack1 = new Stack();
         mStack2 = new Stack();
         mStack3 = new Stack();
         mRings = new Ring[mRingsCount];
 
-        mMovesText.setText("Moves: 0");
         mLevelText.setText("Level " + level);
+        updateMovesText();
 
         // add the rings
         for (int i = mRingsCount - 1; i >= 0; i--) {
@@ -118,8 +117,14 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
     }
 
     private void addToMoves(int i) {
+
         mMoves += i;
-        mMovesText.setText("Moves: " + mMoves);
+        updateMovesText();
+    }
+
+    private void updateMovesText() {
+
+        mMovesText.setText("Moves: "+ mMoves);
     }
 
     @Override
@@ -140,7 +145,7 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
         mTower3.detachSelf();
         mTower3.dispose();
 
-        for (Sprite ring: mRings) {
+        for (Sprite ring : mRings) {
             ring.detachSelf();
             ring.dispose();
         }
@@ -215,7 +220,7 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
 
         if (mStack3.size() == mRingsCount) {
 
-            LevelCompleteWindow.StarsCount starsCount = mMoves == mOptimalMoves? LevelCompleteWindow.StarsCount.THREE : LevelCompleteWindow.StarsCount.TWO;
+            LevelCompleteWindow.StarsCount starsCount = mMoves == mOptimalMoves ? LevelCompleteWindow.StarsCount.THREE : LevelCompleteWindow.StarsCount.TWO;
             mLevelCompleteWindow.display(starsCount, GameScene.this, mCamera);
         }
     }
@@ -223,12 +228,12 @@ public class GameScene extends BaseScene implements LevelCompleteWindow.LevelCom
     @Override
     public void levelCompleteWindowNextButtonClicked() {
 
-        Log.i("", "move to next level");
+        SceneManager.getInstance().moveToNextGame();
     }
 
     @Override
     public void levelCompleteWindowReplayButtonClicked() {
 
-        Log.i("", "reload game");
+        SceneManager.getInstance().reloadGame();
     }
 }
