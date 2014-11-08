@@ -8,10 +8,7 @@ import com.telolahy.towerofhanoi.object.Ring;
 
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.Entity;
-import org.andengine.entity.scene.IOnSceneTouchListener;
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.EntityBackground;
-import org.andengine.entity.scene.background.SpriteBackground;
+import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -34,7 +31,7 @@ public class GameScene extends BaseScene {
     private int mOptimalMoves;
     private int mRingsCount;
 
-    private Text mObjectiveMessage;
+    private Entity mObjectiveEntity;
 
     private HUD mGameHUD;
     private Text mMovesText;
@@ -49,29 +46,35 @@ public class GameScene extends BaseScene {
         createPhysics();
         loadLevel(GameManager.getInstance().currentLevel());
         displayObjectiveMessage();
-
-        setOnSceneTouchListener(new IOnSceneTouchListener() {
-
-            @Override
-            public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-
-                if (mObjectiveMessage.isVisible()) {
-                    mObjectiveMessage.setVisible(false);
-                }
-                return false;
-            }
-        });
     }
 
     private void displayObjectiveMessage() {
 
-        Entity bg = new Entity(0, 0, 800, 480);
-        bg.setColor(1, 0, 0, 1f);
-        attachChild(bg);
+        mObjectiveEntity = new Entity(400, 240);
 
-        String text = mResourcesManager.activity.getResources().getString(R.string.objective_message) + " " + mOptimalMoves;
-        mObjectiveMessage = new Text(400, 240, mResourcesManager.font, text, mVertexBufferObjectManager);
-        attachChild(mObjectiveMessage);
+        final Rectangle rect = new Rectangle(0, 0, 800, 480, mVertexBufferObjectManager) {
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+
+                if (mObjectiveEntity.isVisible()) {
+                    mObjectiveEntity.setVisible(false);
+                    mCamera.setHUD(mGameHUD);
+                }
+                return true;
+            }
+        };
+
+        rect.setColor(0, 0, 0, 0.8f);
+        mObjectiveEntity.attachChild(rect);
+
+        String message = mResourcesManager.activity.getResources().getString(R.string.objective_message) + " " + mOptimalMoves;
+        Text text = new Text(0, 0, mResourcesManager.font, message, mVertexBufferObjectManager);
+        mObjectiveEntity.attachChild(text);
+
+        attachChild(mObjectiveEntity);
+        mCamera.setHUD(null);
+
+        registerTouchArea(rect);
     }
 
     private void loadLevel(int level) {
@@ -94,8 +97,9 @@ public class GameScene extends BaseScene {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
 
-                    if (mObjectiveMessage.isVisible()) {
-                        mObjectiveMessage.setVisible(false);
+                    if (mObjectiveEntity.isVisible()) {
+                        mObjectiveEntity.setVisible(false);
+                        mCamera.setHUD(mGameHUD);
                     }
 
                     if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
@@ -149,8 +153,6 @@ public class GameScene extends BaseScene {
 
         mMovesText = new Text(400, 20, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
         mGameHUD.attachChild(mMovesText);
-
-        mCamera.setHUD(mGameHUD);
     }
 
     private void addToMoves(int i) {
