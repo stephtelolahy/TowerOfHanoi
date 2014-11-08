@@ -17,6 +17,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -45,6 +46,8 @@ public class ResourcesManager {
     public ITextureRegion gameBackgroundTextureRegion;
     public ITextureRegion gameTowerTextureRegion;
     public ITextureRegion gameRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
+    public ITextureRegion gameCompleteWindowRegion;
+    public ITiledTextureRegion gameCompleteStarsRegion;
     private BuildableBitmapTextureAtlas gameTextureAtlas;
 
     public static final int MAX_RING_COUNT = 6;
@@ -135,6 +138,8 @@ public class ResourcesManager {
         gameRingTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring4.png");
         gameRingTextureRegions[4] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring5.png");
         gameRingTextureRegions[5] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring6.png");
+        gameCompleteWindowRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
+        gameCompleteStarsRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
 
         try {
             gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));

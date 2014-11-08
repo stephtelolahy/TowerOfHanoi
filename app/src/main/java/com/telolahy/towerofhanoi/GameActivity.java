@@ -69,10 +69,8 @@ public class GameActivity extends BaseGameActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
         }
         return false;

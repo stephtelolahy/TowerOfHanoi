@@ -1,10 +1,7 @@
 package com.telolahy.towerofhanoi.scene;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.util.Log;
-
 import com.telolahy.towerofhanoi.manager.SceneManager;
+import com.telolahy.towerofhanoi.object.LevelCompleteWindow;
 import com.telolahy.towerofhanoi.object.Ring;
 
 import org.andengine.engine.camera.hud.HUD;
@@ -32,6 +29,7 @@ public class GameScene extends BaseScene {
 
     private HUD mGameHUD;
     private Text mScoreText;
+    private LevelCompleteWindow mLevelCompleteWindow;
 
     @Override
     public void createScene() {
@@ -40,6 +38,8 @@ public class GameScene extends BaseScene {
         createBackground();
         createPhysics();
         loadLevel(1);
+
+        mLevelCompleteWindow = new LevelCompleteWindow(mVertexBufferObjectManager, this);
     }
 
     private void loadLevel(int level) {
@@ -58,8 +58,8 @@ public class GameScene extends BaseScene {
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, mVertexBufferObjectManager) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                    if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
-//                        return false;
+                    if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
+                        return false;
                     this.setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
                     if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP) {
                         checkForCollisionsWithTowers(this);
@@ -98,8 +98,7 @@ public class GameScene extends BaseScene {
         attachChild(mBackground);
     }
 
-    private void createHUD()
-    {
+    private void createHUD() {
         mGameHUD = new HUD();
 
         mScoreText = new Text(20, 420, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
@@ -110,8 +109,7 @@ public class GameScene extends BaseScene {
         mCamera.setHUD(mGameHUD);
     }
 
-    private void addToMoves(int i)
-    {
+    private void addToMoves(int i) {
         mMoves += i;
         mScoreText.setText("Moves: " + mMoves);
     }
@@ -206,23 +204,8 @@ public class GameScene extends BaseScene {
 
         if (mStack3.size() == mRingsCount) {
 
-            mActivity.runOnUiThread(new Runnable() {
-                public void run() {
-
-                    new AlertDialog.Builder(mActivity)
-                            .setTitle("Congratulation !!!")
-                            .setMessage("Level completed with " + mMoves + " moves.\nOptimal is " + mOptimalMoves)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .show();
-
-                }
-            });
-
+            LevelCompleteWindow.StarsCount starsCount = mMoves == mOptimalMoves? LevelCompleteWindow.StarsCount.THREE : LevelCompleteWindow.StarsCount.TWO;
+            mLevelCompleteWindow.display(starsCount, GameScene.this, mCamera);
         }
     }
 }
