@@ -20,6 +20,7 @@ public class LevelCompleteWindow extends Sprite {
     public interface LevelCompleteWindowListener {
 
         void levelCompleteWindowNextButtonClicked();
+
         void levelCompleteWindowReplayButtonClicked();
     }
 
@@ -44,39 +45,37 @@ public class LevelCompleteWindow extends Sprite {
     private void attachStars(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene) {
 
         ResourcesManager resourcesManager = ResourcesManager.getInstance();
+
         String text = resourcesManager.activity.getResources().getString(R.string.level_completed);
         attachChild(new Text(400, 380, resourcesManager.font, text, resourcesManager.vertexBufferObjectManager));
 
-        mStar1 = new TiledSprite(275, 250, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
-        mStar2 = new TiledSprite(400, 250, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
-        mStar3 = new TiledSprite(525, 250, ResourcesManager.getInstance().gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar1 = new TiledSprite(275, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar2 = new TiledSprite(400, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar3 = new TiledSprite(525, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
         attachChild(mStar1);
         attachChild(mStar2);
         attachChild(mStar3);
 
-
-//        {
-//            @Override
-//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//            mListener.levelCompleteWindowReplayButtonClicked();
-//            return true;
-//        }
-//        }
-//        ;
-//        scene.registerTouchArea(mStar2);
-
-
-//        {
-//            @Override
-//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                mListener.levelCompleteWindowNextButtonClicked();
-//                return true;
-//            }
-//        }
-//        ;
-//        scene.registerTouchArea(mStar3);
+        Sprite retryButton = new Sprite(260, 120, resourcesManager.gameCompleteRetryRegion, pSpriteVertexBufferObject) {
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                mListener.levelCompleteWindowReplayButtonClicked();
+                return true;
+            }
+        };
+        attachChild(retryButton);
+        scene.registerTouchArea(retryButton);
 
 
+        Sprite nextButton = new Sprite(540, 120, resourcesManager.gameCompleteNextRegion, pSpriteVertexBufferObject) {
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                mListener.levelCompleteWindowNextButtonClicked();
+                return true;
+            }
+        };
+        attachChild(nextButton);
+        scene.registerTouchArea(nextButton);
     }
 
     /**

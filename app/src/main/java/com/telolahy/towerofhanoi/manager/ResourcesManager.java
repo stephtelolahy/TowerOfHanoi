@@ -48,6 +48,8 @@ public class ResourcesManager {
     public ITextureRegion gameRingTextureRegions[] = new ITextureRegion[MAX_RING_COUNT];
     public ITextureRegion gameWindowRegion;
     public ITiledTextureRegion gameCompleteStarsRegion;
+    public ITextureRegion gameCompleteNextRegion;
+    public ITextureRegion gameCompleteRetryRegion;
 
     private BuildableBitmapTextureAtlas gameTextureAtlas;
 
@@ -141,6 +143,8 @@ public class ResourcesManager {
         gameRingTextureRegions[5] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring6.png");
         gameWindowRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "game_window.png");
         gameCompleteStarsRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        gameCompleteNextRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "next.png");
+        gameCompleteRetryRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "retry.png");
 
         try {
             gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
