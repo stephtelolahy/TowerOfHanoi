@@ -43,7 +43,7 @@ public class GameScene extends BaseScene {
 
         // initialize game
         mMoves = 0;
-        mRingsCount = 3;
+        mRingsCount = 2;
         mOptimalMoves = computeOptimalMoves(mRingsCount);
         mStack1 = new Stack();
         mStack2 = new Stack();
@@ -56,8 +56,8 @@ public class GameScene extends BaseScene {
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, mVertexBufferObjectManager) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                    if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
-                        return false;
+//                    if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
+//                        return false;
                     this.setPosition(pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
                     if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP) {
                         checkForCollisionsWithTowers(this);
@@ -148,11 +148,9 @@ public class GameScene extends BaseScene {
             ring.getStack().remove(ring);
         }
         if (stack != null && tower != null && stack.size() == 0) {
-            float towerTop = tower.getY() - tower.getHeight() / 2;
-            ring.setPosition(tower.getX(), towerTop + ring.getHeight() / 2);
+            ring.setPosition(tower.getX(), tower.getY() - tower.getHeight() / 2 + ring.getHeight() / 2);
         } else if (stack != null && tower != null && stack.size() > 0) {
-            float ringTop = ((Ring) stack.peek()).getY() + ((Ring) stack.peek()).getHeight() / 2;
-            ring.setPosition(tower.getX(), ringTop + ring.getHeight() / 2);
+            ring.setPosition(tower.getX(), ((Ring) stack.peek()).getY() + ((Ring) stack.peek()).getHeight() / 2 + ring.getHeight() / 2);
         }
         stack.add(ring);
         ring.setStack(stack);
