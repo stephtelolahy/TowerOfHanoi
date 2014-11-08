@@ -7,9 +7,13 @@ import android.util.Log;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 import com.telolahy.towerofhanoi.object.Ring;
 
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.adt.align.HorizontalAlign;
 
 import java.util.Stack;
 
@@ -26,24 +30,22 @@ public class GameScene extends BaseScene {
     private int mOptimalMoves;
     private int mRingsCount;
 
+    private HUD mGameHUD;
+    private Text mScoreText;
+
     @Override
     public void createScene() {
 
-        // add background
-        mBackground = new Sprite(400, 240, mResourcesManager.gameBackgroundTextureRegion, mVertexBufferObjectManager);
-        attachChild(mBackground);
+        createHUD();
+        createBackground();
+        createPhysics();
+        loadLevel(1);
+    }
 
-        // add the towers
-        mTower1 = new Sprite(152, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
-        mTower2 = new Sprite(400, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
-        mTower3 = new Sprite(644, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
-        attachChild(mTower1);
-        attachChild(mTower2);
-        attachChild(mTower3);
+    private void loadLevel(int level) {
 
-        // initialize game
         mMoves = 0;
-        mRingsCount = 2;
+        mRingsCount = level + 1;
         mOptimalMoves = computeOptimalMoves(mRingsCount);
         mStack1 = new Stack();
         mStack2 = new Stack();
@@ -80,6 +82,40 @@ public class GameScene extends BaseScene {
         setTouchAreaBindingOnActionDownEnabled(true);
     }
 
+    private void createPhysics() {
+
+        mTower1 = new Sprite(152, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
+        mTower2 = new Sprite(400, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
+        mTower3 = new Sprite(644, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
+        attachChild(mTower1);
+        attachChild(mTower2);
+        attachChild(mTower3);
+    }
+
+    private void createBackground() {
+
+        mBackground = new Sprite(400, 240, mResourcesManager.gameBackgroundTextureRegion, mVertexBufferObjectManager);
+        attachChild(mBackground);
+    }
+
+    private void createHUD()
+    {
+        mGameHUD = new HUD();
+
+        mScoreText = new Text(20, 420, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
+        mScoreText.setAnchorCenter(0, 0);
+        mScoreText.setText("Moves: 0");
+        mGameHUD.attachChild(mScoreText);
+
+        mCamera.setHUD(mGameHUD);
+    }
+
+    private void addToMoves(int i)
+    {
+        mMoves += i;
+        mScoreText.setText("Moves: " + mMoves);
+    }
+
     @Override
     public void onBackKeyPressed() {
 
@@ -105,6 +141,9 @@ public class GameScene extends BaseScene {
 
         this.detachSelf();
         this.dispose();
+
+        mCamera.setHUD(null);
+        mCamera.setChaseEntity(null); //TODO
     }
 
 
@@ -158,8 +197,7 @@ public class GameScene extends BaseScene {
 
         if (currentStack != null && stack != currentStack) {
 
-            mMoves++;
-            Log.i("hanoi", "Moves : " + mMoves + "/" + mOptimalMoves);
+            addToMoves(1);
             checkGameOver();
         }
     }
