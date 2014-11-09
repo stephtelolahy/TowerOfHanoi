@@ -1,14 +1,12 @@
 package com.telolahy.towerofhanoi.scene;
 
-import com.telolahy.towerofhanoi.R;
 import com.telolahy.towerofhanoi.manager.GameManager;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 import com.telolahy.towerofhanoi.object.LevelCompleteWindow;
 import com.telolahy.towerofhanoi.object.Ring;
 
+import org.andengine.engine.Engine;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.entity.Entity;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
@@ -31,8 +29,6 @@ public class GameScene extends BaseScene {
     private int mOptimalMoves;
     private int mRingsCount;
 
-    private Entity mObjectiveEntity;
-
     private HUD mGameHUD;
     private Text mMovesText;
     private Text mLevelText;
@@ -50,31 +46,9 @@ public class GameScene extends BaseScene {
 
     private void displayObjectiveMessage() {
 
-        mObjectiveEntity = new Entity(400, 240);
-
-        final Rectangle rect = new Rectangle(0, 0, 800, 480, mVertexBufferObjectManager) {
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-
-                if (mObjectiveEntity.isVisible()) {
-                    mObjectiveEntity.setVisible(false);
-                    mCamera.setHUD(mGameHUD);
-                }
-                return true;
-            }
-        };
-
-        rect.setColor(0, 0, 0, 0.8f);
-        mObjectiveEntity.attachChild(rect);
-
-        String message = mResourcesManager.activity.getResources().getString(R.string.objective_message) + " " + mOptimalMoves;
-        Text text = new Text(0, 0, mResourcesManager.font, message, mVertexBufferObjectManager);
-        mObjectiveEntity.attachChild(text);
-
-        attachChild(mObjectiveEntity);
-        mCamera.setHUD(null);
-
-        registerTouchArea(rect);
+//        String message = mResourcesManager.activity.getResources().getString(R.string.objective_message) + " " + mOptimalMoves;
+//        Text  text = new Text(400, 240, mResourcesManager.font, message, mVertexBufferObjectManager);
+//        attachChild(text);
     }
 
     private void loadLevel(int level) {
@@ -96,11 +70,6 @@ public class GameScene extends BaseScene {
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, mVertexBufferObjectManager) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-
-                    if (mObjectiveEntity.isVisible()) {
-                        mObjectiveEntity.setVisible(false);
-                        mCamera.setHUD(mGameHUD);
-                    }
 
                     if (((Ring) this.getStack().peek()).getWeight() != this.getWeight())
                         return false;
@@ -153,6 +122,8 @@ public class GameScene extends BaseScene {
 
         mMovesText = new Text(400, 20, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
         mGameHUD.attachChild(mMovesText);
+
+        mCamera.setHUD(mGameHUD);
     }
 
     private void addToMoves(int i) {
@@ -175,6 +146,9 @@ public class GameScene extends BaseScene {
     @Override
     public void disposeScene() {
 
+        Engine.EngineLock engineLock = mActivity.getEngine().getEngineLock();
+        engineLock.lock();
+
         mBackground.detachSelf();
         mBackground.dispose();
         mTower1.detachSelf();
@@ -189,9 +163,6 @@ public class GameScene extends BaseScene {
             ring.dispose();
         }
 
-        this.detachSelf();
-        this.dispose();
-
         mCamera.setHUD(null);
         mCamera.setChaseEntity(null);
 
@@ -199,6 +170,11 @@ public class GameScene extends BaseScene {
             mLevelCompleteWindow.detachSelf();
             mLevelCompleteWindow.dispose();
         }
+
+        this.detachSelf();
+        this.dispose();
+
+        engineLock.unlock();
     }
 
 
