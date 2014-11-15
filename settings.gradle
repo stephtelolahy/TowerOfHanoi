@@ -1,1 +1,2 @@
 include ':app', ':andEngine', ':andEnginePhysicsBox2DExtension'
+include ':andEngineTexturePackerExtension'

@@ -3,9 +3,14 @@ package com.telolahy.towerofhanoi.manager;
 import android.graphics.Color;
 
 import com.telolahy.towerofhanoi.GameActivity;
+import com.telolahy.towerofhanoi.texture.GameTexture;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
+import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
+import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
+import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackTextureRegionLibrary;
+import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
@@ -55,6 +60,9 @@ public class ResourcesManager {
 
     public static final int MAX_RING_COUNT = 6;
 
+    private TexturePackTextureRegionLibrary texturePackLibrary;
+    private TexturePack texturePack;
+
     //---------------------------------------------
     // GETTERS AND SETTERS
     //---------------------------------------------
@@ -74,7 +82,7 @@ public class ResourcesManager {
     public void loadSplashResources() {
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/splash/");
-        splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+        splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
         splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity, "creative_games_logo.png", 0, 0);
         splashTextureAtlas.load();
     }
@@ -134,17 +142,8 @@ public class ResourcesManager {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
         gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
         gameBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "game_background.png");
-        gameTowerTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tower.png");
-        gameRingTextureRegions[0] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring1.png");
-        gameRingTextureRegions[1] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring2.png");
-        gameRingTextureRegions[2] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring3.png");
-        gameRingTextureRegions[3] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring4.png");
-        gameRingTextureRegions[4] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring5.png");
-        gameRingTextureRegions[5] = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "ring6.png");
         gameWindowRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "game_window.png");
         gameCompleteStarsRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
-        gameCompleteNextRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "next.png");
-        gameCompleteRetryRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "retry.png");
 
         try {
             gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
@@ -152,10 +151,29 @@ public class ResourcesManager {
         } catch (final ITextureAtlasBuilder.TextureAtlasBuilderException e) {
             Debug.e(e);
         }
+
+        try {
+            texturePack = new TexturePackLoader(engine.getTextureManager(), "gfx/game/").loadFromAsset(activity.getAssets(), "game_texture_pack.xml");
+            texturePack.loadTexture();
+            texturePackLibrary = texturePack.getTexturePackTextureRegionLibrary();
+        } catch (final TexturePackParseException e) {
+            Debug.e(e);
+        }
+
+        gameTowerTextureRegion = texturePackLibrary.get(GameTexture.TOWER_ID);
+        gameRingTextureRegions[0] = texturePackLibrary.get(GameTexture.RING1_ID);
+        gameRingTextureRegions[1] = texturePackLibrary.get(GameTexture.RING2_ID);
+        gameRingTextureRegions[2] = texturePackLibrary.get(GameTexture.RING3_ID);
+        gameRingTextureRegions[3] = texturePackLibrary.get(GameTexture.RING4_ID);
+        gameRingTextureRegions[4] = texturePackLibrary.get(GameTexture.RING5_ID);
+        gameRingTextureRegions[5] = texturePackLibrary.get(GameTexture.RING6_ID);
+        gameCompleteNextRegion = texturePackLibrary.get(GameTexture.NEXT_ID);
+        gameCompleteRetryRegion = texturePackLibrary.get(GameTexture.RETRY_ID);
     }
 
     public void unloadGameTextures() {
 
         gameTextureAtlas.unload();
+        texturePack.unloadTexture();
     }
 }

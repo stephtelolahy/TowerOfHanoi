@@ -81,6 +81,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="andEnginePhysicsBox2DExtension" exported="" />
     <orderEntry type="module" module-name="andEngine" exported="" />
+    <orderEntry type="module" module-name="andEngineTexturePackerExtension" exported="" />
   </component>
 </module>
 
