@@ -1,13 +1,11 @@
 package com.telolahy.utils.resources;
 
-import android.content.Context;
-
 import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
+import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
@@ -26,9 +24,9 @@ public class TextureDescription {
         textureFile = file;
     }
 
-    public void load(TextureManager textureManager, Context context) {
+    public void load(BaseGameActivity gameActivity) {
         try {
-            texture = new AssetBitmapTexture(textureManager, context.getAssets(), textureFile, TextureOptions.BILINEAR);
+            texture = new AssetBitmapTexture(gameActivity.getTextureManager(), gameActivity.getAssets(), textureFile, TextureOptions.BILINEAR);
             textureRegion = TextureRegionFactory.extractFromTexture(texture);
             texture.load();
         } catch (IOException e) {

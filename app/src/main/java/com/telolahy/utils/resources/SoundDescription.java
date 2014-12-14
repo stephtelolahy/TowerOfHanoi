@@ -1,10 +1,8 @@
 package com.telolahy.utils.resources;
 
-import android.content.Context;
-
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
-import org.andengine.audio.sound.SoundManager;
+import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
@@ -29,10 +27,10 @@ public class SoundDescription {
         mSoundConditioner = conditioner;
     }
 
-    public void load(SoundManager manager, Context context) {
+    public void load(BaseGameActivity gameActivity) {
 
         try {
-            mSound = SoundFactory.createSoundFromAsset(manager, context, mSoundFile);
+            mSound = SoundFactory.createSoundFromAsset(gameActivity.getSoundManager(), gameActivity, mSoundFile);
         } catch (final IOException e) {
             mSound = null;
             Debug.e(e);

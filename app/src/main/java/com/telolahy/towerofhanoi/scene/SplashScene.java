@@ -1,5 +1,7 @@
 package com.telolahy.towerofhanoi.scene;
 
+import com.telolahy.towerofhanoi.Constants;
+
 import org.andengine.entity.sprite.Sprite;
 
 /**
@@ -12,7 +14,7 @@ public class SplashScene extends BaseScene {
     @Override
     public void createScene() {
 
-        mBackground = new Sprite(400, 240, mResourcesManager.splashTextureRegion, mVertexBufferObjectManager);
+        mBackground = new Sprite(Constants.CAMERA_WIDTH /2, Constants.CAMERA_HEIGHT / 2, mResourcesManager.splashTexture.textureRegion, mVertexBufferObjectManager);
         attachChild(mBackground);
     }
 

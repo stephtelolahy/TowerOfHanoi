@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.telolahy.towerofhanoi.MainActivity;
 import com.telolahy.towerofhanoi.texture.GameTexture;
 import com.telolahy.utils.resources.FontDescription;
+import com.telolahy.utils.resources.TextureDescription;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
@@ -39,10 +40,9 @@ public class ResourcesManager {
     public BoundCamera camera;
     public VertexBufferObjectManager vertexBufferObjectManager;
 
-    public FontDescription mainFont = new FontDescription("font/font.ttf", 50, Color.WHITE, 2, Color.BLACK);
+    public final FontDescription mainFont = new FontDescription("font/font.ttf", 50, Color.WHITE, 2, Color.BLACK);
 
-    public ITextureRegion splashTextureRegion;
-    private BitmapTextureAtlas splashTextureAtlas;
+    public final TextureDescription splashTexture = new TextureDescription("gfx/splash/creative_games_logo.png");
 
     public ITextureRegion menuBackgroundTextureRegion;
     public ITextureRegion menuPlayTextureRegion;
@@ -82,16 +82,12 @@ public class ResourcesManager {
 
     public void loadSplashResources() {
 
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/splash/");
-        splashTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
-        splashTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, activity, "creative_games_logo.png", 0, 0);
-        splashTextureAtlas.load();
+        splashTexture.load(activity);
     }
 
     public void unloadSplashResources() {
 
-        splashTextureAtlas.unload();
-        splashTextureRegion = null;
+        splashTexture.unload();
     }
 
     public void loadMenuResources() {
@@ -118,7 +114,7 @@ public class ResourcesManager {
 
     private void loadMenuFonts() {
 
-        mainFont.load(activity.getFontManager(), activity.getTextureManager(), activity);
+        mainFont.load(activity);
     }
 
     public void unloadMenuTextures() {

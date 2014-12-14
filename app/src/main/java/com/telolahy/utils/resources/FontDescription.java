@@ -1,14 +1,12 @@
 package com.telolahy.utils.resources;
 
-import android.content.Context;
 import android.graphics.Color;
 
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.font.FontManager;
-import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.ui.activity.BaseGameActivity;
 
 /**
  * Created by stephanohuguestelolahy on 12/14/14.
@@ -35,10 +33,10 @@ public class FontDescription {
         this(file, fontSize, fontColor, 0, Color.TRANSPARENT);
     }
 
-    public void load(FontManager fontManager, TextureManager textureManager, Context context) {
+    public void load(BaseGameActivity gameActivity) {
 
-        BitmapTextureAtlas atlas = new BitmapTextureAtlas(textureManager, 256, mFontSize > 50 ? 512 : 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        font = FontFactory.createStrokeFromAsset(fontManager, atlas, context.getAssets(), mFontFile, mFontSize, true, mFontColor, mBorderSize, mBorderColor);
+        BitmapTextureAtlas atlas = new BitmapTextureAtlas(gameActivity.getTextureManager(), 256, mFontSize > 50 ? 512 : 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        font = FontFactory.createStrokeFromAsset(gameActivity.getFontManager(), atlas, gameActivity.getAssets(), mFontFile, mFontSize, true, mFontColor, mBorderSize, mBorderColor);
         font.load();
     }
 }
