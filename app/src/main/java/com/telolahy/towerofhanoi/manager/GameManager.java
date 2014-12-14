@@ -12,7 +12,7 @@ public class GameManager {
     private static final String LEVEL_PREFS_KEY = "level";
     private static final String PREFS_NAME = "game_preferences";
 
-    public static final int LEVELS_COUNT = 6;
+    public static final int LEVELS_COUNT = 8;
 
     public static GameManager getInstance() {
         return INSTANCE;
