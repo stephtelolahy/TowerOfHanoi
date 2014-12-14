@@ -1,5 +1,6 @@
 package com.telolahy.towerofhanoi.scene;
 
+import com.telolahy.towerofhanoi.Constants;
 import com.telolahy.towerofhanoi.R;
 
 import org.andengine.entity.scene.background.Background;
@@ -16,7 +17,7 @@ public class LoadingScene extends BaseScene {
 
         setBackground(new Background(Color.BLACK));
         String text = mActivity.getResources().getString(R.string.loading);
-        attachChild(new Text(400, 240, mResourcesManager.font, text, mVertexBufferObjectManager));
+        attachChild(new Text(Constants.CAMERA_WIDTH /2, Constants.CAMERA_HEIGHT/2, mResourcesManager.mainFont.font, text, mVertexBufferObjectManager));
     }
 
     @Override

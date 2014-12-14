@@ -117,10 +117,10 @@ public class GameScene extends BaseScene {
 
         mGameHUD = new HUD();
 
-        mLevelText = new Text(100, 440, mResourcesManager.font, "Level 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
+        mLevelText = new Text(100, 440, mResourcesManager.mainFont.font, "Level 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
         mGameHUD.attachChild(mLevelText);
 
-        mMovesText = new Text(400, 20, mResourcesManager.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
+        mMovesText = new Text(400, 20, mResourcesManager.mainFont.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
         mGameHUD.attachChild(mMovesText);
 
         mCamera.setHUD(mGameHUD);

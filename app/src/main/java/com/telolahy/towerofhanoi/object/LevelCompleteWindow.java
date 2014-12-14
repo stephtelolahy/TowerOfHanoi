@@ -1,5 +1,6 @@
 package com.telolahy.towerofhanoi.object;
 
+import com.telolahy.towerofhanoi.Constants;
 import com.telolahy.towerofhanoi.R;
 import com.telolahy.towerofhanoi.manager.GameManager;
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
@@ -53,7 +54,7 @@ public class LevelCompleteWindow extends Sprite {
             text = resourcesManager.activity.getResources().getString(R.string.last_level_completed);
         }
 
-        attachChild(new Text(400, 380, resourcesManager.font, text, resourcesManager.vertexBufferObjectManager));
+        attachChild(new Text(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT - 100, resourcesManager.mainFont.font, text, resourcesManager.vertexBufferObjectManager));
 
         mStar1 = new TiledSprite(275, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
         mStar2 = new TiledSprite(400, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);

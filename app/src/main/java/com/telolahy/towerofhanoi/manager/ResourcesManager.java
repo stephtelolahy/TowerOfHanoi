@@ -2,8 +2,9 @@ package com.telolahy.towerofhanoi.manager;
 
 import android.graphics.Color;
 
-import com.telolahy.towerofhanoi.GameActivity;
+import com.telolahy.towerofhanoi.MainActivity;
 import com.telolahy.towerofhanoi.texture.GameTexture;
+import com.telolahy.utils.resources.FontDescription;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
@@ -34,11 +35,11 @@ public class ResourcesManager {
     private static final ResourcesManager INSTANCE = new ResourcesManager();
 
     public Engine engine;
-    public GameActivity activity;
+    public MainActivity activity;
     public BoundCamera camera;
     public VertexBufferObjectManager vertexBufferObjectManager;
 
-    public Font font;
+    public FontDescription mainFont = new FontDescription("font/font.ttf", 50, Color.WHITE, 2, Color.BLACK);
 
     public ITextureRegion splashTextureRegion;
     private BitmapTextureAtlas splashTextureAtlas;
@@ -71,7 +72,7 @@ public class ResourcesManager {
         return INSTANCE;
     }
 
-    public static void prepareManager(Engine engine, GameActivity activity, BoundCamera camera, VertexBufferObjectManager vertexBufferObjectManager) {
+    public static void prepareManager(Engine engine, MainActivity activity, BoundCamera camera, VertexBufferObjectManager vertexBufferObjectManager) {
 
         getInstance().engine = engine;
         getInstance().activity = activity;
@@ -117,11 +118,7 @@ public class ResourcesManager {
 
     private void loadMenuFonts() {
 
-        FontFactory.setAssetBasePath("font/");
-        final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2, Color.BLACK);
-        font.load();
+        mainFont.load(activity.getFontManager(), activity.getTextureManager(), activity);
     }
 
     public void unloadMenuTextures() {

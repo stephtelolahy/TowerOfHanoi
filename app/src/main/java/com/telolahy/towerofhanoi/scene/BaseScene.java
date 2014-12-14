@@ -1,6 +1,6 @@
 package com.telolahy.towerofhanoi.scene;
 
-import com.telolahy.towerofhanoi.GameActivity;
+import com.telolahy.towerofhanoi.MainActivity;
 import com.telolahy.towerofhanoi.manager.ResourcesManager;
 
 import org.andengine.engine.camera.BoundCamera;
@@ -15,7 +15,7 @@ public abstract class BaseScene extends Scene {
     protected ResourcesManager mResourcesManager;
     protected VertexBufferObjectManager mVertexBufferObjectManager;
     protected BoundCamera mCamera;
-    protected GameActivity mActivity;
+    protected MainActivity mActivity;
 
     //---------------------------------------------
     // CONSTRUCTOR

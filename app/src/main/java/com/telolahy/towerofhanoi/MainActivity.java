@@ -22,10 +22,7 @@ import java.io.IOException;
 /**
  * Created by stephanohuguestelolahy on 11/4/14.
  */
-public class GameActivity extends BaseGameActivity {
-
-    private static final int CAMERA_WIDTH = 800;
-    private static final int CAMERA_HEIGHT = 480;
+public class MainActivity extends BaseGameActivity {
 
     private BoundCamera mCamera;
 
@@ -36,7 +33,7 @@ public class GameActivity extends BaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        mCamera = new BoundCamera(0, 0, Constants.CAMERA_WIDTH, Constants.CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), mCamera);
         engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 //        engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
