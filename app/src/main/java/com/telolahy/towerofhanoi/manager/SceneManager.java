@@ -5,6 +5,7 @@ import com.telolahy.towerofhanoi.scene.GameScene;
 import com.telolahy.towerofhanoi.scene.LoadingScene;
 import com.telolahy.towerofhanoi.scene.MainMenuScene;
 import com.telolahy.towerofhanoi.scene.SplashScene;
+import com.telolahy.utils.AppRater;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -57,6 +58,7 @@ public class SceneManager {
         mLoadingScene = new LoadingScene();
         setScene(mMenuScene);
         disposeSplashScene();
+        AppRater.app_launched(ResourcesManager.getInstance().activity);
     }
 
     public void loadGameScene() {

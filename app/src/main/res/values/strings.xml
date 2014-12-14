@@ -11,4 +11,9 @@
     <string name="level_completed">Level completed !</string>
     <string name="last_level_completed">All completed. Well done !</string>
     <string name="objective_message">Move rings to right tower\n  Perfect score is </string>
+    <string name="rate">Rate</string>
+    <string name="if_you_enjoy">If you enjoy using %s, please take a moment to rate it. Thanks for your support!</string>
+    <string name="remind_me_later">Later</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="share">Share</string>
 </resources>

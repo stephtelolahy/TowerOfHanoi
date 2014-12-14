@@ -43,7 +43,9 @@ public class ResourcesManager {
             new TextureDescription("gfx/game/ring2.png"),
             new TextureDescription("gfx/game/ring3.png"),
             new TextureDescription("gfx/game/ring4.png"),
-            new TextureDescription("gfx/game/ring5.png")
+            new TextureDescription("gfx/game/ring5.png"),
+            new TextureDescription("gfx/game/ring6.png"),
+            new TextureDescription("gfx/game/ring7.png")
     };
 
     public final TextureDescription gameCompleteWindowTexture = new TextureDescription("gfx/game/game_window.png");
