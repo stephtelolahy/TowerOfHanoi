@@ -58,7 +58,9 @@ public class SceneManager {
         mLoadingScene = new LoadingScene();
         setScene(mMenuScene);
         disposeSplashScene();
-        AppRater.app_launched(ResourcesManager.getInstance().activity);
+
+        UpgradeManager.getInstance().checkUpgrade();
+        AppRater.checkAppLaunched();
     }
 
     public void loadGameScene() {

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 
 import com.telolahy.towerofhanoi.R;
+import com.telolahy.towerofhanoi.manager.ResourcesManager;
 
 /**
  * Created by stephanohuguestelolahy on 12/7/14.
@@ -18,9 +19,11 @@ public class AppRater {
     private final static int DAYS_UNTIL_PROMPT = 0;
     private final static int LAUNCHES_UNTIL_PROMPT = 2;
 
-    public static void app_launched(final Context mContext) {
+    public static void checkAppLaunched() {
 
-        SharedPreferences prefs = mContext.getSharedPreferences("apprater", 0);
+        final Context context = ResourcesManager.getInstance().activity;
+
+        SharedPreferences prefs = context.getSharedPreferences("apprater", 0);
         if (prefs.getBoolean("dontshowagain", false)) {
             return;
         }
@@ -43,9 +46,9 @@ public class AppRater {
             if (System.currentTimeMillis() >= date_firstLaunch +
                     (DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
 
-                ((Activity) mContext).runOnUiThread(new Runnable() {
+                ((Activity) context).runOnUiThread(new Runnable() {
                     public void run() {
-                        showRateDialog(mContext, editor);
+                        showRateDialog(context, editor);
                     }
                 });
             }
