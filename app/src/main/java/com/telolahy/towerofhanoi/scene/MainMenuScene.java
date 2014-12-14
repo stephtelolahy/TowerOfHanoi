@@ -6,6 +6,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.widget.TextView;
 
+import com.telolahy.towerofhanoi.Constants;
 import com.telolahy.towerofhanoi.R;
 import com.telolahy.towerofhanoi.manager.SceneManager;
 
@@ -36,7 +37,7 @@ public class MainMenuScene extends BaseScene {
 
     private void createBackground() {
 
-        mBackground = new Sprite(400, 240, mResourcesManager.menuBackgroundTextureRegion, mVertexBufferObjectManager);
+        mBackground = new Sprite(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT / 2, mResourcesManager.menuBackgroundTexture.textureRegion, mVertexBufferObjectManager);
         attachChild(mBackground);
     }
 
@@ -45,8 +46,8 @@ public class MainMenuScene extends BaseScene {
         mMenuChildScene = new MenuScene(mCamera);
         mMenuChildScene.setPosition(-140, -200);
 
-        IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, mResourcesManager.menuPlayTextureRegion, mVertexBufferObjectManager), 1.2f, 1);
-        IMenuItem helpMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_HELP, mResourcesManager.menuHelpTextureRegion, mVertexBufferObjectManager), 1.2f, 1);
+        IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, mResourcesManager.menuPlayTexture.textureRegion, mVertexBufferObjectManager), 1.2f, 1);
+        IMenuItem helpMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_HELP, mResourcesManager.menuHelpTexture.textureRegion, mVertexBufferObjectManager), 1.2f, 1);
         mMenuChildScene.addMenuItem(playMenuItem);
         mMenuChildScene.addMenuItem(helpMenuItem);
 

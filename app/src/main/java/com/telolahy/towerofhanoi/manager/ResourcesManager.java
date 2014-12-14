@@ -13,9 +13,6 @@ import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.T
 import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
 import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackTextureRegionLibrary;
 import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -44,10 +41,9 @@ public class ResourcesManager {
 
     public final TextureDescription splashTexture = new TextureDescription("gfx/splash/creative_games_logo.png");
 
-    public ITextureRegion menuBackgroundTextureRegion;
-    public ITextureRegion menuPlayTextureRegion;
-    public ITextureRegion menuHelpTextureRegion;
-    private BuildableBitmapTextureAtlas menuTextureAtlas;
+    public final TextureDescription menuBackgroundTexture = new TextureDescription("gfx/menu/menu_background.png");
+    public final TextureDescription menuPlayTexture = new TextureDescription("gfx/menu/play.png");
+    public final TextureDescription menuHelpTexture = new TextureDescription("gfx/menu/help.png");
 
     public ITextureRegion gameBackgroundTextureRegion;
     public ITextureRegion gameTowerTextureRegion;
@@ -92,24 +88,8 @@ public class ResourcesManager {
 
     public void loadMenuResources() {
 
-        loadMenuGraphics();
+        loadMenuTextures();
         loadMenuFonts();
-    }
-
-    private void loadMenuGraphics() {
-
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
-        menuTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-        menuBackgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "menu_background.png");
-        menuPlayTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
-        menuHelpTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "help.png");
-
-        try {
-            menuTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
-            menuTextureAtlas.load();
-        } catch (final ITextureAtlasBuilder.TextureAtlasBuilderException e) {
-            Debug.e(e);
-        }
     }
 
     private void loadMenuFonts() {
@@ -118,19 +98,25 @@ public class ResourcesManager {
     }
 
     public void unloadMenuTextures() {
-        menuTextureAtlas.unload();
+
+        menuBackgroundTexture.unload();
+        menuPlayTexture.unload();
+        menuHelpTexture.unload();
     }
 
     public void loadMenuTextures() {
-        menuTextureAtlas.load();
+
+        menuBackgroundTexture.load(activity);
+        menuPlayTexture.load(activity);
+        menuHelpTexture.load(activity);
     }
 
     public void loadGameResources() {
 
-        loadGameGraphics();
+        loadGameTextures();
     }
 
-    private void loadGameGraphics() {
+    private void loadGameTextures() {
 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
         gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);

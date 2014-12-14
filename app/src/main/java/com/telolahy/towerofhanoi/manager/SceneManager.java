@@ -82,6 +82,7 @@ public class SceneManager {
             public void onTimePassed(final TimerHandler pTimerHandler) {
                 mEngine.unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadMenuTextures();
+                mMenuScene = new MainMenuScene();
                 setScene(mMenuScene);
             }
         }));
