@@ -123,6 +123,20 @@ public class GameScene extends BaseScene {
         mMovesText = new Text(400, 20, mResourcesManager.mainFont.font, "Moves: 0123456789", new TextOptions(HorizontalAlign.LEFT), mVertexBufferObjectManager);
         mGameHUD.attachChild(mMovesText);
 
+        Text replayText = new Text(700, 440, mResourcesManager.mainFont.font, "Restart", new TextOptions(HorizontalAlign.RIGHT), mVertexBufferObjectManager) {
+
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+
+                if (pSceneTouchEvent.getAction() == TouchEvent.ACTION_UP) {
+                    SceneManager.getInstance().reloadGame();
+                }
+                return true;
+            }
+        };
+        registerTouchArea(replayText);
+        mGameHUD.attachChild(replayText);
+
         mCamera.setHUD(mGameHUD);
     }
 

@@ -39,7 +39,7 @@ public class LevelCompleteWindow extends Sprite {
 
     public LevelCompleteWindow(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene, LevelCompleteWindowListener listener) {
 
-        super(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT  /2, ResourcesManager.getInstance().gameCompleteWindowTexture.textureRegion, pSpriteVertexBufferObject);
+        super(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT / 2, ResourcesManager.getInstance().gameCompleteWindowTexture.textureRegion, pSpriteVertexBufferObject);
         mListener = listener;
         attachStars(pSpriteVertexBufferObject, scene);
     }

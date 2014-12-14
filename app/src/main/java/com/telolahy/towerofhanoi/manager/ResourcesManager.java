@@ -14,13 +14,6 @@ import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.T
 import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
 import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackTextureRegionLibrary;
 import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
-import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
-import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
@@ -49,7 +42,6 @@ public class ResourcesManager {
     public final TextureDescription menuHelpTexture = new TextureDescription("gfx/menu/help.png");
 
     // game resources
-    public final TextureDescription gameReplayTexture = new TextureDescription("gfx/game/retry.png");
     public final TextureDescription gameBackgroundTexture = new TextureDescription("gfx/game/game_background.png");
     public final TextureDescription gameCompleteWindowTexture = new TextureDescription("gfx/game/game_window.png");
     public final TiledTextureDescription gameCompleteStarsTexture = new TiledTextureDescription("gfx/game/star.png", 2, 1);
@@ -119,7 +111,6 @@ public class ResourcesManager {
 
     private void loadGameTextures() {
 
-        gameReplayTexture.load(activity);
         gameCompleteWindowTexture.load(activity);
         gameCompleteStarsTexture.load(activity);
         gameBackgroundTexture.load(activity);
@@ -145,7 +136,6 @@ public class ResourcesManager {
 
     public void unloadGameTextures() {
 
-        gameReplayTexture.unload();
         gameCompleteWindowTexture.unload();
         gameCompleteStarsTexture.unload();
         gameBackgroundTexture.unload();
