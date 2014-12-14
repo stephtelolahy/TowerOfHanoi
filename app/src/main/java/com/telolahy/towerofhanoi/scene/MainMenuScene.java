@@ -1,6 +1,8 @@
 package com.telolahy.towerofhanoi.scene;
 
 import android.app.AlertDialog;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -109,7 +111,15 @@ public class MainMenuScene extends BaseScene {
                 textView.setText(message);
                 textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-                String title = mActivity.getResources().getString(R.string.app_name);
+                String title = "";
+                try {
+                    PackageInfo pInfo = mActivity.getPackageManager().getPackageInfo(mActivity.getPackageName(), 0);
+                    String versionName = pInfo.versionName;
+                    title = mActivity.getResources().getString(R.string.app_name) + " v" + versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 String positiveText = mActivity.getResources().getString(R.string.ok);
                 new AlertDialog.Builder(mActivity)
                         .setTitle(title)
