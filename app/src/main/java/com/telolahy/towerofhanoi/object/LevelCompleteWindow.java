@@ -39,7 +39,7 @@ public class LevelCompleteWindow extends Sprite {
 
     public LevelCompleteWindow(VertexBufferObjectManager pSpriteVertexBufferObject, Scene scene, LevelCompleteWindowListener listener) {
 
-        super(400, 240, ResourcesManager.getInstance().gameWindowRegion, pSpriteVertexBufferObject);
+        super(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT  /2, ResourcesManager.getInstance().gameCompleteWindowTexture.textureRegion, pSpriteVertexBufferObject);
         mListener = listener;
         attachStars(pSpriteVertexBufferObject, scene);
     }
@@ -56,9 +56,9 @@ public class LevelCompleteWindow extends Sprite {
 
         attachChild(new Text(Constants.CAMERA_WIDTH / 2, Constants.CAMERA_HEIGHT - 100, resourcesManager.mainFont.font, text, resourcesManager.vertexBufferObjectManager));
 
-        mStar1 = new TiledSprite(275, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
-        mStar2 = new TiledSprite(400, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
-        mStar3 = new TiledSprite(525, 260, resourcesManager.gameCompleteStarsRegion, pSpriteVertexBufferObject);
+        mStar1 = new TiledSprite(275, 260, resourcesManager.gameCompleteStarsTexture.textureRegion, pSpriteVertexBufferObject);
+        mStar2 = new TiledSprite(400, 260, resourcesManager.gameCompleteStarsTexture.textureRegion, pSpriteVertexBufferObject);
+        mStar3 = new TiledSprite(525, 260, resourcesManager.gameCompleteStarsTexture.textureRegion, pSpriteVertexBufferObject);
         attachChild(mStar1);
         attachChild(mStar2);
         attachChild(mStar3);

@@ -109,7 +109,7 @@ public class GameScene extends BaseScene {
 
     private void createBackground() {
 
-        mBackground = new Sprite(400, 240, mResourcesManager.gameBackgroundTextureRegion, mVertexBufferObjectManager);
+        mBackground = new Sprite(400, 240, mResourcesManager.gameBackgroundTexture.textureRegion, mVertexBufferObjectManager);
         attachChild(mBackground);
     }
 
