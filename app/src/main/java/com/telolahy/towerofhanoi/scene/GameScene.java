@@ -66,7 +66,7 @@ public class GameScene extends BaseScene {
 
         // add the rings
         for (int i = mRingsCount - 1; i >= 0; i--) {
-            ITextureRegion ringTextureRegion = mResourcesManager.gameRingTextureRegions[i];
+            ITextureRegion ringTextureRegion = mResourcesManager.gameRingTextures[i].textureRegion;
             Ring ring = new Ring(i, 0, 0, ringTextureRegion, mVertexBufferObjectManager) {
                 @Override
                 public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -99,9 +99,9 @@ public class GameScene extends BaseScene {
 
     private void createPhysics() {
 
-        mTower1 = new Sprite(152, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
-        mTower2 = new Sprite(400, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
-        mTower3 = new Sprite(644, 240, mResourcesManager.gameTowerTextureRegion, mVertexBufferObjectManager);
+        mTower1 = new Sprite(152, 240, mResourcesManager.gameTowerTexture.textureRegion, mVertexBufferObjectManager);
+        mTower2 = new Sprite(400, 240, mResourcesManager.gameTowerTexture.textureRegion, mVertexBufferObjectManager);
+        mTower3 = new Sprite(644, 240, mResourcesManager.gameTowerTexture.textureRegion, mVertexBufferObjectManager);
         attachChild(mTower1);
         attachChild(mTower2);
         attachChild(mTower3);

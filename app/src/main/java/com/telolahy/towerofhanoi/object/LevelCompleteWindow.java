@@ -63,7 +63,7 @@ public class LevelCompleteWindow extends Sprite {
         attachChild(mStar2);
         attachChild(mStar3);
 
-        Sprite retryButton = new Sprite(260, 120, resourcesManager.gameCompleteRetryRegion, pSpriteVertexBufferObject) {
+        Sprite retryButton = new Sprite(260, 120, resourcesManager.gameCompleteRetryTexture.textureRegion, pSpriteVertexBufferObject) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 mListener.levelCompleteWindowReplayButtonClicked();
@@ -80,7 +80,7 @@ public class LevelCompleteWindow extends Sprite {
             return;
         }
 
-        Sprite nextButton = new Sprite(540, 120, resourcesManager.gameCompleteNextRegion, pSpriteVertexBufferObject) {
+        Sprite nextButton = new Sprite(540, 120, resourcesManager.gameCompleteNextTexture.textureRegion, pSpriteVertexBufferObject) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 mListener.levelCompleteWindowNextButtonClicked();

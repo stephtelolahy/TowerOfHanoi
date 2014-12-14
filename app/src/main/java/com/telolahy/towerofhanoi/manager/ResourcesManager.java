@@ -3,20 +3,13 @@ package com.telolahy.towerofhanoi.manager;
 import android.graphics.Color;
 
 import com.telolahy.towerofhanoi.MainActivity;
-import com.telolahy.towerofhanoi.texture.GameTexture;
 import com.telolahy.utils.resources.FontDescription;
 import com.telolahy.utils.resources.TextureDescription;
 import com.telolahy.utils.resources.TiledTextureDescription;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
-import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePack;
-import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackLoader;
-import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.TexturePackTextureRegionLibrary;
-import org.andengine.extension.texturepacker.opengl.texture.util.texturepacker.exception.TexturePackParseException;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.debug.Debug;
 
 /**
  * Created by stephanohuguestelolahy on 11/4/14.
@@ -43,15 +36,21 @@ public class ResourcesManager {
 
     // game resources
     public final TextureDescription gameBackgroundTexture = new TextureDescription("gfx/game/game_background.png");
+    public final TextureDescription gameTowerTexture = new TextureDescription("gfx/game/tower.png");
+    public final TextureDescription gameRingTextures[] = {
+            new TextureDescription("gfx/game/ring0.png"),
+            new TextureDescription("gfx/game/ring1.png"),
+            new TextureDescription("gfx/game/ring2.png"),
+            new TextureDescription("gfx/game/ring3.png"),
+            new TextureDescription("gfx/game/ring4.png"),
+            new TextureDescription("gfx/game/ring5.png")
+    };
+
     public final TextureDescription gameCompleteWindowTexture = new TextureDescription("gfx/game/game_window.png");
+    public final TextureDescription gameCompleteNextTexture = new TextureDescription("gfx/game/next.png");
+    public final TextureDescription gameCompleteRetryTexture = new TextureDescription("gfx/game/retry.png");
     public final TiledTextureDescription gameCompleteStarsTexture = new TiledTextureDescription("gfx/game/star.png", 2, 1);
 
-
-    public ITextureRegion gameTowerTextureRegion;
-    public ITextureRegion gameRingTextureRegions[] = new ITextureRegion[GameManager.LEVELS_COUNT];
-    public ITextureRegion gameCompleteNextRegion;
-    public ITextureRegion gameCompleteRetryRegion;
-    private TexturePack texturePack;
 
     //---------------------------------------------
     // GETTERS AND SETTERS
@@ -111,35 +110,27 @@ public class ResourcesManager {
 
     private void loadGameTextures() {
 
+        gameBackgroundTexture.load(activity);
+        gameTowerTexture.load(activity);
+        for (TextureDescription texture : gameRingTextures) {
+            texture.load(activity);
+        }
+
         gameCompleteWindowTexture.load(activity);
         gameCompleteStarsTexture.load(activity);
-        gameBackgroundTexture.load(activity);
-
-        TexturePackTextureRegionLibrary texturePackLibrary = null;
-        try {
-            texturePack = new TexturePackLoader(engine.getTextureManager(), "gfx/game/").loadFromAsset(activity.getAssets(), "game_texture_pack.xml");
-            texturePack.loadTexture();
-            texturePackLibrary = texturePack.getTexturePackTextureRegionLibrary();
-        } catch (final TexturePackParseException e) {
-            Debug.e(e);
-        }
-        gameTowerTextureRegion = texturePackLibrary.get(GameTexture.TOWER_ID);
-        gameRingTextureRegions[0] = texturePackLibrary.get(GameTexture.RING1_ID);
-        gameRingTextureRegions[1] = texturePackLibrary.get(GameTexture.RING2_ID);
-        gameRingTextureRegions[2] = texturePackLibrary.get(GameTexture.RING3_ID);
-        gameRingTextureRegions[3] = texturePackLibrary.get(GameTexture.RING4_ID);
-        gameRingTextureRegions[4] = texturePackLibrary.get(GameTexture.RING5_ID);
-        gameRingTextureRegions[5] = texturePackLibrary.get(GameTexture.RING6_ID);
-        gameCompleteNextRegion = texturePackLibrary.get(GameTexture.NEXT_ID);
-        gameCompleteRetryRegion = texturePackLibrary.get(GameTexture.RETRY_ID);
+        gameCompleteNextTexture.load(activity);
+        gameCompleteRetryTexture.load(activity);
     }
 
     public void unloadGameTextures() {
 
+        gameBackgroundTexture.unload();
+        gameTowerTexture.unload();
+        for (TextureDescription texture : gameRingTextures) {
+            texture.unload();
+        }
+
         gameCompleteWindowTexture.unload();
         gameCompleteStarsTexture.unload();
-        gameBackgroundTexture.unload();
-
-        texturePack.unloadTexture();
     }
 }
