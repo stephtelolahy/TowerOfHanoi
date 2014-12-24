@@ -1,16 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="unspecified" >
-        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/build/intermediates/exploded-aar/TowerOfHanoi/andEngine/unspecified/res" />
-    </dataSet>
-    <dataSet config="main" >
-        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/src/main/res" />
-        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/build/generated/res/rs/release" />
-        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/build/generated/res/generated/release" />
-    </dataSet>
-    <dataSet config="release" >
-        <source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/src/release/res" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="unspecified"><source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/build/intermediates/exploded-aar/TowerOfHanoi/andEngine/unspecified/res"/></dataSet><dataSet config="main"><source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/src/main/res"/><source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/build/generated/res/rs/release"/><source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/build/generated/res/generated/release"/></dataSet><dataSet config="release"><source path="/Users/stephanohuguestelolahy/Documents/Github/TowerOfHanoi/andEngineTexturePackerExtension/src/release/res"/></dataSet><mergedItems/></merger>

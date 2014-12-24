@@ -2,18 +2,16 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 15
-    buildToolsVersion "19.1.0"
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
-        applicationId "org.andengine.extension.texturepacker.opengl.texture.util.texturepacker"
         minSdkVersion 8
         targetSdkVersion 8
     }
 
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled false
         }
     }
 }
