@@ -1,2 +1,3 @@
-include ':app', ':andEngine', ':andEnginePhysicsBox2DExtension'
-include ':andEngineTexturePackerExtension'
+include ':app'
+include ':andEngine'
+rootProject.name = "TowerOfHanoi"
