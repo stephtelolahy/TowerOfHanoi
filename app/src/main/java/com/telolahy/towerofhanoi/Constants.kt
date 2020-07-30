@@ -6,5 +6,5 @@ package com.telolahy.towerofhanoi
 object Constants {
   const val CAMERA_WIDTH = 800f
   const val CAMERA_HEIGHT = 480f
-  const val LEVELS_COUNT = 8
+  const val LEVELS_COUNT = 9
 }

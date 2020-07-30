@@ -40,7 +40,8 @@ class ResourcesManager {
       TextureDescription("gfx/game/ring4.png"),
       TextureDescription("gfx/game/ring5.png"),
       TextureDescription("gfx/game/ring6.png"),
-      TextureDescription("gfx/game/ring7.png")
+      TextureDescription("gfx/game/ring7.png"),
+      TextureDescription("gfx/game/ring8.png")
   )
   val gameCompleteWindowTexture = TextureDescription("gfx/game/game_window.png")
   val gameCompleteNextTexture = TextureDescription("gfx/game/next.png")
