@@ -1,1 +1,3 @@
 include ':app'
+include ':andEngine'
+rootProject.name = "TowerOfHanoi"

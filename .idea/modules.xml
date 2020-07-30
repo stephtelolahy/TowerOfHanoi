@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TowerOfHanoi.iml" filepath="$PROJECT_DIR$/.idea/modules/TowerOfHanoi.iml" group="TowerOfHanoi" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/andEngine/andEngine.iml" filepath="$PROJECT_DIR$/.idea/modules/andEngine/andEngine.iml" group="TowerOfHanoi/andEngine" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="TowerOfHanoi/app" />
+    </modules>
+  </component>
+</project>
