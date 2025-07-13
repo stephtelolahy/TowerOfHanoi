@@ -89,6 +89,8 @@ class LevelCompleteWindow(pSpriteVertexBufferObject: VertexBufferObjectManager, 
         mStar2?.currentTileIndex = 0
         mStar3?.currentTileIndex = 0
       }
+
+        null -> TODO()
     }
 
 

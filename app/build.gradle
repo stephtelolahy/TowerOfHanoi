@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "com.telolahy.towerofhanoi"
-        minSdkVersion 17
-        targetSdkVersion 34
-        versionCode 6
-        versionName "1.4.0"
+        minSdk 17
+        targetSdkVersion 36
+        versionCode 7
+        versionName '1.5.0'
     }
 
     signingConfigs {
@@ -28,12 +28,20 @@ android {
         }
     }
     namespace 'com.telolahy.towerofhanoi'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8 // Or your desired Java version
+        targetCompatibility JavaVersion.VERSION_1_8 // Or your desired Java version
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8' // Or your desired Java version, matching compileOptions
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':andEngine')
-    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
     maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
