@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId "com.telolahy.towerofhanoi"
         minSdkVersion 17
-        targetSdkVersion 34
+        targetSdkVersion 36
         versionCode 6
         versionName "1.4.0"
     }
@@ -28,6 +28,15 @@ android {
         }
     }
     namespace 'com.telolahy.towerofhanoi'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8 // Or your desired Java version
+        targetCompatibility JavaVersion.VERSION_1_8 // Or your desired Java version
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8' // Or your desired Java version, matching compileOptions
+    }
 }
 
 dependencies {
